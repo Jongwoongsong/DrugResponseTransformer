@@ -1,6 +1,6 @@
 # DrugResponseTransformer
 
-Reproducibility repository for the revised manuscript:
+Reproducibility repository for DrugResponseTransformer:
 
 **Interpretable Prediction of Drug Sensitivity via Transfer Learning Based on Biological Graphs**
 
@@ -8,7 +8,7 @@ Reproducibility repository for the revised manuscript:
 
 DrugResponseTransformer (DRT) integrates molecular graphs, pathway-grounded cell-line representations, biological graph structure, and Transformer-based cross-modal contextualization.
 
-The revised analysis evaluates predictive performance, generalization, architectural contributions, and limitations of model attribution.
+The analysis evaluates predictive performance, generalization, architectural contributions, and limitations of model attribution.
 
 ## Repository structure
 
