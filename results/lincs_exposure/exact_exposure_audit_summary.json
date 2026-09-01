@@ -1,0 +1,11 @@
+{
+  "pretraining_rows": 591912,
+  "pretraining_unique_raw_smiles": 28553,
+  "pretraining_unique_canonical_structures": 28456,
+  "invalid_unique_lincs_smiles": 0,
+  "test_structures": 41,
+  "lincs_exposed": 23,
+  "lincs_unexposed": 18,
+  "exposure_fraction": 0.5609756097560976,
+  "canonicalization": "RDKit MolFromSmiles -> MolToSmiles(canonical=True, isomericSmiles=True)"
+}

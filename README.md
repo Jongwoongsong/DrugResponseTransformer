@@ -123,3 +123,11 @@ Public release files:
 
 The public split files do not redistribute GDSC response labels.
 <!-- CELLBLIND_FINAL_END -->
+
+## LINCS pretraining exposure audit
+
+Exact RDKit canonical-structure matching against the final 591,912-profile LINCS pretraining corpus showed that 23 of 41 (56.1%) downstream drug-blind test structures were present as exact canonical structures in LINCS, whereas 18 of 41 (43.9%) were absent.
+
+The exact-unexposed subset was evaluated separately across optimization seeds 42, 123, and 2026. Pretrained DRT did not show a consistent advantage over scratch training in this subset (RMSE 3.1797 ± 0.1881 vs. 3.1077 ± 0.0418; pooled PCC 0.1777 ± 0.1734 vs. 0.2855 ± 0.0715). These results distinguish exact pretraining exposure from downstream GDSC structure holdout; they do not constitute a scaffold-novel or pretraining-excluded retraining experiment.
+
+Public derived outputs are provided in `results/lincs_exposure/`. The exact-overlap audit can be recomputed from locally obtained LINCS data using `analysis/audit_lincs_exact_exposure.py`.
