@@ -76,7 +76,7 @@ Additional package snapshots are provided in:
 
 Final architecture and training settings are recorded in `configs/final_experiment_config.json`.
 
-The revised architecture uses 31 KEGG pathways, 712 pathway-specific gene occurrences aggregated into 268 unique gene tokens, typed/direction-aware biological graph processing, and a two-layer eight-head Transformer.
+The architecture uses 31 KEGG pathways, 712 pathway-specific gene occurrences aggregated into 268 unique gene tokens, typed/direction-aware biological graph processing, and a two-layer eight-head Transformer.
 
 ## Interpretation
 
