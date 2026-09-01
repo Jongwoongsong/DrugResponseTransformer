@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
-from torch_geometric.data import Batch  # ★ NEW: Pathway batching용
+from torch_geometric.data import Batch
 from typing import List, Optional, Dict, Tuple, Union
 from dataclasses import dataclass
 import logging
@@ -14,20 +14,20 @@ from Model.GeneExpressionTransformerNoPos import GeneExpressionTransformerNoPos
 
 @dataclass
 class ModelConfig:
-    # 모델 구조
+
     dim_node: int = 32
     out_drug: int = 64
     out_cell: int = 64
     pe_dim: int = 1
     num_pathways: int = 31
-    # 트랜스포머
+
     transformer_heads: int = 8
     ffn_dim: Optional[int] = None
     transformer_layers: int = 2
-    # 학습
+
     dropout_ratio: float = 0.1
     max_num_nodes: int = 44
-    # 파인튜닝
+
     freeze_encoders: bool = True
     last_n_layers: int = 1
     unfreeze_pool_query: bool = True
@@ -77,7 +77,7 @@ class DrugResponseTransformer(nn.Module):
     Memory-optimized DrugResponseTransformer with Pathway Batching
     
     Key optimizations:
-    1. ★ Pathway Batching: 31 pathways를 한 번에 처리 (3-5x speedup)
+    1. Pathway batching: process 31 pathways in a single batch (3-5x speedup).
     2. Gradient checkpointing for CellEncoder (saves ~40% memory)
     3. Better memory management in cell encoding
     """
@@ -112,7 +112,7 @@ class DrugResponseTransformer(nn.Module):
             self.logger.info("Gradient checkpointing ENABLED for CellEncoder")
         if self.config.use_pathway_batching:
             self.logger.info("★ Pathway batching ENABLED (3-5x speedup)")
-    
+
     def _validate_args(self, args):
         required = ['num_feature_drug', 'dim_drug', 'num_feature_cell', 'dim_cell']
         for attr in required:
@@ -131,7 +131,7 @@ class DrugResponseTransformer(nn.Module):
         for arg_name, cfg_name in mapping.items():
             if hasattr(args, arg_name):
                 setattr(self.config, cfg_name, getattr(args, arg_name))
-    
+
     def _setup_gene_alignment(self):
         self.idx2gene = self.landmark_gene_order
         self.gene2idx = {g: i for i, g in enumerate(self.idx2gene)}
@@ -153,10 +153,10 @@ class DrugResponseTransformer(nn.Module):
         self.pool_query_drug = nn.Parameter(torch.randn(self.config.dim_node))
         self.time_proj = nn.Linear(1, self.config.dim_node)
         self.dose_proj = nn.Linear(1, self.config.dim_node)
-        # PGE 전용
+
         self.drug_to_gene = nn.Linear(self.config.dim_node, self.config.dim_node)
         self.gate_layer = nn.Linear(self.config.dim_node, 1)
-    
+
     def _init_encoders(self, args):
         self.DrugEncoder = DrugEncoder(
             in_channels=args.num_feature_drug,
@@ -191,7 +191,7 @@ class DrugResponseTransformer(nn.Module):
         )
 
     def _init_heads(self):
-        # PGE용 gene-level regressor
+
         self.gene_embedding = nn.Parameter(torch.randn(self.num_genes, self.config.dim_node) * 0.02)
         self.regressor = nn.Sequential(
             nn.Linear(self.config.dim_node, 128),
@@ -199,14 +199,14 @@ class DrugResponseTransformer(nn.Module):
             nn.Dropout(p=self.config.dropout_ratio),
             nn.Linear(128, 1),
         )
-        # IC50용 head (summary + time + dose)
+
         self.ic50_head = nn.Sequential(
             nn.Linear(self.config.dim_node * 3, 128),
             nn.ReLU(),
             nn.Dropout(p=self.config.dropout_ratio),
             nn.Linear(128, 1),
         )
-        # BGE branch (IC50용)
+
         self.bge_encoder = nn.Sequential(
             nn.Linear(self.num_genes, self.config.dim_node),
             nn.ReLU(),
@@ -289,7 +289,7 @@ class DrugResponseTransformer(nn.Module):
         for enc in [self.DrugEncoder, self.CellEncoder]:
             for p in enc.parameters():
                 p.requires_grad = not freeze
-    
+
     def _setup_transformer_layers(self):
         layers = getattr(self.Transformer, "layers", None)
         if layers is None:
@@ -306,7 +306,7 @@ class DrugResponseTransformer(nn.Module):
         if isinstance(out_ln, nn.Module):
             for p in out_ln.parameters():
                 p.requires_grad = True
-    
+
     def _setup_other_params(self):
         self.pool_query.requires_grad = self.config.unfreeze_pool_query
         self.pool_query_drug.requires_grad = self.config.unfreeze_pool_query
@@ -315,7 +315,7 @@ class DrugResponseTransformer(nn.Module):
                 p.requires_grad = self.config.unfreeze_time_dose
         for p in self.token_type_embed.parameters():
             p.requires_grad = self.config.unfreeze_type_embed
-    
+
     def get_finetune_param_groups(
         self,
         body_lr: float = 6e-5,
@@ -334,38 +334,38 @@ class DrugResponseTransformer(nn.Module):
             {"params": head_params, "lr": head_lr, "weight_decay": weight_decay},
             {"params": body_params, "lr": body_lr, "weight_decay": weight_decay},
         ]
-    
+
     # ═══════════════════════════════════════════════════════════════════════════
     # ★★★ OPTIMIZED: Encoding functions ★★★
     # ═══════════════════════════════════════════════════════════════════════════
     def _encode_drug_tokens(self, drug_graph) -> Tuple[torch.Tensor, torch.Tensor, List[List[str]]]:
         device = next(self.parameters()).device
         drug_graph = drug_graph.to(device)
-    
+
         atom_tokens, atom_mask = self.DrugEncoder(drug_graph, return_graph=False)
         atom_mask = atom_mask.to(torch.bool)
-    
+
         B, Ta, _ = atom_tokens.shape
         gene_ids = [[None] * Ta for _ in range(B)]
-    
+
         return atom_tokens, atom_mask, gene_ids
-    
+
     def _cell_encoder_forward(self, pathway_graph, pathway_idx: int) -> torch.Tensor:
         """Wrapper for CellEncoder forward - used with gradient checkpointing"""
         return self.CellEncoder(pathway_graph, pathway_idx=pathway_idx)
-    
+
     def _encode_cell_tokens(self, cell_graph_seq) -> Tuple[torch.Tensor, torch.Tensor, List[List[str]]]:
         """
         Cell token encoding - routes to batched or sequential version
         
-        ★ NEW: Pathway batching으로 3-5x 속도 향상
+        Pathway batching provides approximately 3-5x speedup.
         """
-        # Pathway batching 사용 여부 결정
+
         use_batching = (
-            self.config.use_pathway_batching and 
+            self.config.use_pathway_batching and
             hasattr(self.CellEncoder, 'forward_batched')
         )
-        
+
         if use_batching:
             return self._encode_cell_tokens_batched(cell_graph_seq)
         else:
@@ -375,18 +375,18 @@ class DrugResponseTransformer(nn.Module):
     # ★★★ NEW: Pathway Batching Version (3-5x faster) ★★★
     # ═══════════════════════════════════════════════════════════════════════════
     def _encode_cell_tokens_batched(
-        self, 
+        self,
         cell_graph_seq: List[List],
     ) -> Tuple[torch.Tensor, torch.Tensor, List[List[str]]]:
         """
         ★ PATHWAY BATCHING OPTIMIZED ★
         
-        기존: 31 pathways × B samples = 31B번의 개별 CellEncoder forward
-        최적화: 1번의 batched forward로 모든 pathway 처리
+        Original: 31 pathways x B samples = 31B individual CellEncoder forward passes.
+        Optimized: process all pathways with a single batched forward pass.
         
-        ★ 중요: Transformer 입력 구조는 동일하게 유지됨!
-           각 pathway의 gene들이 개별 토큰으로 들어감.
-           graph들을 "합치는" 게 아니라 GPU 병렬 처리를 위한 것.
+        Important: the Transformer input structure remains unchanged.
+           Genes from each pathway remain represented as individual tokens.
+           Graphs are not "merged"; batching is used only for GPU parallelism.
         
         Args:
             cell_graph_seq: List of pathway lists, shape [B][num_pathways]
@@ -398,18 +398,18 @@ class DrugResponseTransformer(nn.Module):
         """
         device = next(self.parameters()).device
         batch_size = len(cell_graph_seq)
-        
+
         if batch_size == 0:
             empty_tokens = torch.zeros(1, 1, self.config.dim_node, device=device)
             empty_mask = torch.zeros(1, 1, dtype=torch.bool, device=device)
             return empty_tokens, empty_mask, [[None]]
-        
-        # ═══ Step 1: 모든 pathway graph 수집 ═══
+
+
         all_graphs = []
         all_pathway_indices = []
         all_sample_indices = []
         node_ids_per_graph = []
-        
+
         for sample_idx, pathway_list in enumerate(cell_graph_seq):
             for pw_idx, pathway_graph in enumerate(pathway_list):
                 # Move to device
@@ -417,65 +417,65 @@ class DrugResponseTransformer(nn.Module):
                 all_graphs.append(pg)
                 all_pathway_indices.append(pw_idx)
                 all_sample_indices.append(sample_idx)
-                
-                # Collect node_ids (landmark filtering에 사용)
+
+
                 if hasattr(pg, 'node_ids'):
                     node_ids_per_graph.append(list(pg.node_ids))
                 else:
                     node_ids_per_graph.append([str(i) for i in range(pg.num_nodes)])
-        
+
         if len(all_graphs) == 0:
             empty_tokens = torch.zeros(batch_size, 1, self.config.dim_node, device=device)
             empty_mask = torch.zeros(batch_size, 1, dtype=torch.bool, device=device)
             empty_gene_ids = [[None] for _ in range(batch_size)]
             return empty_tokens, empty_mask, empty_gene_ids
-        
-        # ═══ Step 2: PyG Batch로 묶기 ═══
-        # 이렇게 하면 모든 graph를 한 번에 처리 가능!
-        # edge_index는 자동으로 offset 적용되어 graph 간 edge 연결 없음
+
+
+
+
         batched_graphs = Batch.from_data_list(all_graphs)
         pathway_indices = torch.tensor(all_pathway_indices, device=device, dtype=torch.long)
         sample_indices = torch.tensor(all_sample_indices, device=device, dtype=torch.long)
-        
-        # ═══ Step 3: Batched CellEncoder Forward (핵심!) ═══
-        # 한 번의 forward로 모든 pathway 처리!
-        # 기존: 31 × B번 forward → 최적화: 1번 forward
+
+
+
+
         all_node_embeddings = self.CellEncoder.forward_batched(
             batched_graphs,
             pathway_indices,
         )  # [total_nodes, dim]
-        
-        # ptr: 각 graph의 노드 시작 위치
+
+
         ptr = batched_graphs.ptr  # [num_graphs + 1]
-        
-        # ═══ Step 4: Sample별로 결과 분리 및 Landmark Filtering ═══
+
+
         batch_tokens = []
         batch_masks = []
         batch_gene_ids = []
-        
+
         for sample_idx in range(batch_size):
             sample_tokens = []
             sample_gene_ids = []
-            
-            # 이 sample에 해당하는 graph indices 찾기
+
+
             sample_graph_mask = (sample_indices == sample_idx)
             sample_graph_indices = torch.where(sample_graph_mask)[0]
-            
+
             for graph_idx in sample_graph_indices.tolist():
-                # 이 graph의 노드들
+
                 start_node = int(ptr[graph_idx].item())
                 end_node = int(ptr[graph_idx + 1].item())
-                
+
                 graph_node_emb = all_node_embeddings[start_node:end_node]  # [num_nodes, dim]
                 graph_node_ids = node_ids_per_graph[graph_idx]
-                
-                # ★ Landmark filtering (기존과 동일!)
+
+
                 for node_idx, gene_id in enumerate(graph_node_ids):
                     gene_str = str(gene_id)
                     if gene_str in self.landmark_gene_set:
                         sample_tokens.append(graph_node_emb[node_idx])
                         sample_gene_ids.append(gene_str)
-            
+
             # Stack tokens for this sample
             if sample_tokens:
                 sample_tokens_tensor = torch.stack(sample_tokens, dim=0)  # [T, dim]
@@ -484,39 +484,39 @@ class DrugResponseTransformer(nn.Module):
                 sample_tokens_tensor = torch.zeros(1, self.config.dim_node, device=device)
                 sample_mask = torch.zeros(1, dtype=torch.bool, device=device)
                 sample_gene_ids = [None]
-            
+
             batch_tokens.append(sample_tokens_tensor)
             batch_masks.append(sample_mask)
             batch_gene_ids.append(sample_gene_ids)
-        
+
         # ═══ Step 5: Padding ═══
         max_len = max(t.size(0) for t in batch_tokens)
-        
+
         padded_tokens = []
         padded_masks = []
         padded_gene_ids = []
-        
+
         for tokens, mask, gene_ids in zip(batch_tokens, batch_masks, batch_gene_ids):
             pad_len = max_len - tokens.size(0)
-            
+
             padded_tokens.append(F.pad(tokens, (0, 0, 0, pad_len)))
             padded_masks.append(F.pad(mask, (0, pad_len), value=False))
             padded_gene_ids.append(gene_ids + [None] * pad_len)
-        
+
         tokens_tensor = torch.stack(padded_tokens, dim=0)  # [B, max_len, dim]
         masks_tensor = torch.stack(padded_masks, dim=0)    # [B, max_len]
-        
+
         # ★ Memory cleanup
         del all_graphs, batched_graphs, all_node_embeddings
-        
+
         return tokens_tensor, masks_tensor, padded_gene_ids
 
     # ═══════════════════════════════════════════════════════════════════════════
-    # Sequential Version (기존 방식, fallback)
+
     # ═══════════════════════════════════════════════════════════════════════════
     def _encode_cell_tokens_sequential(self, cell_graph_seq) -> Tuple[torch.Tensor, torch.Tensor, List[List[str]]]:
         """
-        기존 순차 처리 방식 (fallback)
+        Original sequential processing path (fallback).
         
         Key optimizations:
         1. Gradient checkpointing reduces memory by ~40% (trades compute for memory)
@@ -524,15 +524,15 @@ class DrugResponseTransformer(nn.Module):
         """
         device = next(self.parameters()).device
         batch_tokens, batch_masks, batch_gene_ids = [], [], []
-        
+
         use_checkpoint = self.config.use_gradient_checkpointing and self.training
-        
+
         for pathway_list in cell_graph_seq:
             cell_tokens, cell_masks, cell_gene_ids = [], [], []
-            
+
             for i, pathway_graph in enumerate(pathway_list):
                 pathway_graph = pathway_graph.to(device)
-                
+
                 # ★ Gradient checkpointing: saves memory but recomputes forward in backward
                 if use_checkpoint:
                     tokens = checkpoint(
@@ -543,28 +543,28 @@ class DrugResponseTransformer(nn.Module):
                     )
                 else:
                     tokens = self.CellEncoder(pathway_graph, pathway_idx=i)
-                
+
                 # Validation
                 assert hasattr(pathway_graph, "node_ids"), \
                        f"[CellEncoder] pathway {i} has no 'node_ids' attribute"
                 assert len(pathway_graph.node_ids) == pathway_graph.num_nodes, \
                        f"[CellEncoder] pathway {i} node_ids length mismatch"
-                
+
                 # Landmark filtering
                 if hasattr(pathway_graph, "node_ids"):
                     lm_mask = [str(g) in self.landmark_gene_set for g in pathway_graph.node_ids]
                     lm_mask_tensor = torch.tensor(lm_mask, dtype=torch.bool, device=tokens.device)
-                    
+
                     if lm_mask_tensor.any():
                         kept = tokens[lm_mask_tensor]
                         kept_ids = [str(g) for keep, g in zip(lm_mask, pathway_graph.node_ids) if keep]
                         cell_tokens.append(kept)
                         cell_masks.append(torch.ones(kept.size(0), dtype=torch.bool, device=device))
                         cell_gene_ids.extend(kept_ids)
-                
+
                 # ★ Memory cleanup: delete intermediate tensors
                 del tokens, pathway_graph
-            
+
             # Concatenate for this cell
             if cell_tokens:
                 all_tokens = torch.cat(cell_tokens, dim=0)
@@ -575,29 +575,29 @@ class DrugResponseTransformer(nn.Module):
                 all_tokens = torch.zeros((0, self.config.dim_node), device=device)
                 all_masks = torch.zeros((0,), dtype=torch.bool, device=device)
                 cell_gene_ids = []
-            
+
             batch_tokens.append(all_tokens)
             batch_masks.append(all_masks)
             batch_gene_ids.append(cell_gene_ids)
-        
+
         # Pad to max length
         max_len = max(t.size(0) for t in batch_tokens) if batch_tokens else 1
         padded_tokens, padded_masks, padded_gene_ids = [], [], []
-        
+
         for tokens, masks, gene_ids in zip(batch_tokens, batch_masks, batch_gene_ids):
             pad_len = max_len - tokens.size(0)
             padded_tokens.append(F.pad(tokens, (0, 0, 0, pad_len)))
             padded_masks.append(F.pad(masks, (0, pad_len), value=False))
             padded_gene_ids.append(gene_ids + [None] * pad_len)
-        
+
         tokens_tensor = torch.stack(padded_tokens, dim=0)
         masks_tensor = torch.stack(padded_masks, dim=0)
-        
+
         # ★ Final cleanup
         del batch_tokens, batch_masks, padded_tokens, padded_masks
-        
+
         return tokens_tensor, masks_tensor, padded_gene_ids
-    
+
     def _encode_batch(
         self,
         drug_graph,
@@ -615,7 +615,7 @@ class DrugResponseTransformer(nn.Module):
             raise ValueError(f"Batch size mismatch: drug_graph({batch_size}) vs cell_graph_seq({len(cell_graph_seq)})")
 
         drug_tokens, drug_masks, drug_gene_ids = self._encode_drug_tokens(drug_graph)
-        
+
         if cell_embed is not None:
             if self.task == "pge":
                 raise ValueError("PGE task requires cell_graph_seq for gene ID mapping, not cell_embed")
@@ -628,7 +628,7 @@ class DrugResponseTransformer(nn.Module):
             cell_tokens, cell_masks, cell_gene_ids
         )
         return TokenBatch(all_tokens, all_masks, all_gene_ids)
-    
+
     def _handle_cell_embed(
         self,
         cell_embed: Union[torch.Tensor, List[torch.Tensor]],
@@ -658,7 +658,7 @@ class DrugResponseTransformer(nn.Module):
                 masks = torch.ones(tokens.size(0), tokens.size(1), dtype=torch.bool, device=device)
         gene_ids = [[None] * tokens.size(1) for _ in range(tokens.size(0))]
         return tokens, masks, gene_ids
-    
+
     def _combine_tokens(
         self,
         drug_tokens: torch.Tensor, drug_masks: torch.Tensor, drug_gene_ids: List[List[str]],
@@ -681,7 +681,7 @@ class DrugResponseTransformer(nn.Module):
             final_masks.append(F.pad(m, (0, pad_len), value=False))
             final_gene_ids.append(gid + [None] * pad_len)
         return torch.stack(final_tokens, dim=0), torch.stack(final_masks, dim=0), final_gene_ids
-    
+
     # ═══════════════════════════════════════════════════════════════════════════
     # Condition tokens & mask
     # ═══════════════════════════════════════════════════════════════════════════
@@ -707,7 +707,7 @@ class DrugResponseTransformer(nn.Module):
         mask = mask & (~zero_rows)
         mask[:, :2] = True
         return TokenBatch(token_batch.tokens, mask, token_batch.gene_ids)
-    
+
     # ═══════════════════════════════════════════════════════════════════════════
     # Forward
     # ═══════════════════════════════════════════════════════════════════════════
@@ -889,7 +889,7 @@ class DrugResponseTransformer(nn.Module):
         if return_attn:
             return ic50, attn_maps
         return ic50
-    
+
     # ═══════════════════════════════════════════════════════════════════════════
     # forward_with_summary
     # ═══════════════════════════════════════════════════════════════════════════
@@ -927,7 +927,7 @@ class DrugResponseTransformer(nn.Module):
         summary = torch.einsum("bt,btd->bd", alpha, body_out)
         if self.task == "ic50":
             summary = self._fuse_summary_with_bge(summary, bge)
-            
+
         if self.task == "pge":
             body_gene_ids = [gids[2:] for gids in token_batch.gene_ids]
             pred = self._aggregate_pge_predictions(body_out, body_mask, body_gene_ids)
@@ -1018,7 +1018,7 @@ class DrugResponseTransformer(nn.Module):
         cell_tokens, cell_mask, cell_gene_ids = self._encode_cell_tokens([cell_seq])
         cell_tokens = cell_tokens.squeeze(0)
         cell_mask = cell_mask.squeeze(0)
-        
+
         if cell_mask.any():
             scores = torch.matmul(cell_tokens, self.pool_query)
             scores = scores.masked_fill(~cell_mask, float("-inf"))
@@ -1026,7 +1026,7 @@ class DrugResponseTransformer(nn.Module):
             cell_repr = torch.einsum("t,td->d", alpha, cell_tokens)
         else:
             cell_repr = torch.zeros(self.config.dim_node, device=cell_tokens.device)
-        
+
         return cell_repr
 
     def fuse_and_predict(
@@ -1040,15 +1040,15 @@ class DrugResponseTransformer(nn.Module):
         """Drug repr + Cell repr list → prediction"""
         device = drug_repr.device
         B = drug_repr.size(0)
-        
+
         cell_repr = torch.stack(cell_repr_list, dim=0).to(device)
         combined = drug_repr + cell_repr
-        
+
         dose_emb = self.dose_proj(dose.view(-1, 1))
         time_emb = self.time_proj(time.view(-1, 1))
-        
+
         feat = torch.cat([combined, dose_emb, time_emb], dim=1)
-        
+
         if self.task == "pge":
             B = combined.size(0)
             gene_emb = self.gene_embedding.unsqueeze(0).expand(B, -1, -1)  # [B, G, D]
@@ -1056,9 +1056,9 @@ class DrugResponseTransformer(nn.Module):
             pred = self.regressor(expanded).squeeze(-1)  # [B, G]
         else:
             pred = self.ic50_head(feat).squeeze(-1)
-        
+
         return pred
-    
+
     # ═══════════════════════════════════════════════════════════════════════════
     # Memory & Speed management helpers
     # ═══════════════════════════════════════════════════════════════════════════
@@ -1066,22 +1066,22 @@ class DrugResponseTransformer(nn.Module):
         """Enable gradient checkpointing for memory savings"""
         self.config.use_gradient_checkpointing = True
         self.logger.info("Gradient checkpointing ENABLED")
-    
+
     def disable_gradient_checkpointing(self):
         """Disable gradient checkpointing for faster training"""
         self.config.use_gradient_checkpointing = False
         self.logger.info("Gradient checkpointing DISABLED")
-    
+
     def enable_pathway_batching(self):
         """Enable pathway batching for faster training (3-5x speedup)"""
         self.config.use_pathway_batching = True
         self.logger.info("★ Pathway batching ENABLED")
-    
+
     def disable_pathway_batching(self):
         """Disable pathway batching (fallback to sequential)"""
         self.config.use_pathway_batching = False
         self.logger.info("Pathway batching DISABLED")
-    
+
     def get_memory_stats(self) -> Dict[str, float]:
         """Get current GPU memory stats (if available)"""
         if torch.cuda.is_available():
@@ -1097,11 +1097,11 @@ class DrugResponseTransformer(nn.Module):
 # Factory functions
 # ═══════════════════════════════════════════════════════════════════════════════
 def create_pretrain_model(
-    args, 
-    landmark_set: List[str], 
+    args,
+    landmark_set: List[str],
     config: Optional[ModelConfig] = None,
     use_gradient_checkpointing: bool = False,
-    use_pathway_batching: bool = True,  # ★ NEW: 기본 활성화
+    use_pathway_batching: bool = True,
 ) -> DrugResponseTransformer:
     config = config or ModelConfig()
     config.use_gradient_checkpointing = use_gradient_checkpointing
@@ -1112,8 +1112,8 @@ def create_pretrain_model(
 
 
 def create_finetune_model(
-    args, 
-    landmark_set: List[str], 
+    args,
+    landmark_set: List[str],
     pretrained_model_path: str,
     config: Optional[ModelConfig] = None,
 ) -> DrugResponseTransformer:

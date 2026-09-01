@@ -1,0 +1,8 @@
+model,rmse,mae,pooled_pcc,macro_within_structure_pcc,reporting
+Ridge,2.7604,2.0055,0.3369,0.4400,single validation-selected run
+Random Forest,2.8786,2.0388,0.2516,0.4744,single validation-selected run
+XGBoost,2.7822,2.0395,0.3143,0.4342,single validation-selected run
+Global MLP,2.7403,2.0683,0.3966,0.4591,single validation-selected run
+CSG2A,2.2481,1.7528,0.6537,0.4667,primary validation-MSE-selected run
+DRT scratch,2.9532 ± 0.2400,2.1701 ± 0.1511,0.2743 ± 0.1617,0.4304 ± 0.0081,mean ± SD over optimization seeds 42 123 2026
+DRT pretrained,2.9231 ± 0.1074,2.2331 ± 0.0564,0.2696 ± 0.0963,0.4217 ± 0.0087,mean ± SD over optimization seeds 42 123 2026

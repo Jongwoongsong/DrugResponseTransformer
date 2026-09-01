@@ -1,0 +1,87 @@
+{
+  "backend": "gpu_hist",
+  "best_iteration": 999,
+  "best_score": 1.3109066671342349,
+  "elapsed_seconds": 97.39749503135681,
+  "metrics": {
+    "test": {
+      "mae": 1.0126399581907755,
+      "n": 41257,
+      "pearson": 0.8763396112229553,
+      "r2": 0.7661362503159441,
+      "rmse": 1.337593807022052,
+      "spearman": 0.8369320017418033,
+      "y_pred_mean": 2.3001811308056013,
+      "y_true_mean": 2.3058591854094344
+    },
+    "validation": {
+      "mae": 0.9918106716830849,
+      "n": 42000,
+      "pearson": 0.878872042641775,
+      "r2": 0.7708756986263877,
+      "rmse": 1.3109067219899069,
+      "spearman": 0.8385650046807317,
+      "y_pred_mean": 2.2219776972695477,
+      "y_true_mean": 2.1621354064074554
+    }
+  },
+  "model": "XGBoost",
+  "parameters": {
+    "base_score": 0.5,
+    "booster": "gbtree",
+    "callbacks": null,
+    "colsample_bylevel": 1,
+    "colsample_bynode": 1,
+    "colsample_bytree": 0.8,
+    "early_stopping_rounds": null,
+    "enable_categorical": false,
+    "eval_metric": "rmse",
+    "gamma": 0,
+    "gpu_id": 0,
+    "grow_policy": "depthwise",
+    "importance_type": null,
+    "interaction_constraints": "",
+    "learning_rate": 0.03,
+    "max_bin": 256,
+    "max_cat_to_onehot": 4,
+    "max_delta_step": 0,
+    "max_depth": 6,
+    "max_leaves": 0,
+    "min_child_weight": 1.0,
+    "missing": NaN,
+    "monotone_constraints": "()",
+    "n_estimators": 1000,
+    "n_jobs": 12,
+    "num_parallel_tree": 1,
+    "objective": "reg:squarederror",
+    "predictor": "gpu_predictor",
+    "random_state": 42,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "sampling_method": "uniform",
+    "scale_pos_weight": 1,
+    "subsample": 0.8,
+    "tree_method": "gpu_hist",
+    "validate_parameters": 1,
+    "verbosity": 1
+  },
+  "per_drug_macro": {
+    "test": {
+      "mean_pearson": 0.4117222477727936,
+      "mean_rmse": 1.2426977394839887,
+      "mean_spearman": 0.40219595191003377,
+      "median_pearson": 0.43253874821239197,
+      "median_spearman": 0.4201424044120673,
+      "n_drugs": 413
+    },
+    "validation": {
+      "mean_pearson": 0.374787743212962,
+      "mean_rmse": 1.223815403914741,
+      "mean_spearman": 0.36967942304180806,
+      "median_pearson": 0.37198352326246176,
+      "median_spearman": 0.37220416905006515,
+      "n_drugs": 413
+    }
+  },
+  "xgboost_version": "1.6.2"
+}

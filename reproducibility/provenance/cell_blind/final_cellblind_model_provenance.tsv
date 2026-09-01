@@ -1,0 +1,8 @@
+model	source_run	selection
+Ridge regression	global_classical_cell_blind_gpu1_v1_exact_manifest	fixed alpha=1.0 exact cell-blind run
+XGBoost	global_classical_cell_blind_gpu1_v1_exact_manifest	validation-RMSE early stopping
+Global MLP	cellblind_csg2a_hybrid_final_v1/runs/global_mlp_exact_cellblind_s42_bs2048	validation-PCC early stopping
+CSG2A	cellblind_csg2a_hybrid_final_v1/runs/csg2a_exact_cellblind_s42_bs128	primary original validation-MSE criterion
+DRT + global residual hybrid	cellblind_csg2a_hybrid_final_v1/runs/residual_hybrid_cellblind_core_s123_residual_s42_bs2048	sensitivity analysis; validation-PCC early stopping
+DRT scratch	final_cellblind_scratch_full_s42_bs32_v3	validation-PCC early stopping
+DRT pretrained	final_cellblind_pretrained_full_s{42,123,2026}_bs32_v3	validation-PCC early stopping; 3 optimization seeds

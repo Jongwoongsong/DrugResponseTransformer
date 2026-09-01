@@ -26,7 +26,7 @@ class TransformerEncoderLayerNoPos(nn.Module):
 
     def forward(self, x: torch.Tensor, token_mask: torch.Tensor, return_attn: bool = False):
         token_mask = token_mask.bool()
-        key_padding_mask = ~token_mask  # [B, T], True=무시(패딩)
+        key_padding_mask = ~token_mask
 
         y = self.norm1(x)
         attn_out, attn_w = self.mha(

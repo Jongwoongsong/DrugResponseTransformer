@@ -1,0 +1,55 @@
+{
+  "elapsed_seconds": 12.670000791549683,
+  "metrics": {
+    "test": {
+      "mae": 1.0714859802369392,
+      "n": 41257,
+      "pearson": 0.8596300978426246,
+      "r2": 0.7387398527062132,
+      "rmse": 1.413772008241339,
+      "spearman": 0.8153500140261803,
+      "y_pred_mean": 2.316904520414623,
+      "y_true_mean": 2.3058591854094344
+    },
+    "validation": {
+      "mae": 1.0700270474158349,
+      "n": 42000,
+      "pearson": 0.85900443900338,
+      "r2": 0.7359611851168268,
+      "rmse": 1.4072462529130434,
+      "spearman": 0.8123507005894314,
+      "y_pred_mean": 2.2672796976396015,
+      "y_true_mean": 2.1621354064074554
+    }
+  },
+  "model": "Ridge",
+  "n_iter": [
+    123
+  ],
+  "parameters": {
+    "alpha": 1.0,
+    "copy_X": true,
+    "fit_intercept": true,
+    "max_iter": 1000,
+    "solver": "lsqr",
+    "tol": 0.0001
+  },
+  "per_drug_macro": {
+    "test": {
+      "mean_pearson": 0.33529544870679984,
+      "mean_rmse": 1.313439824899264,
+      "mean_spearman": 0.3262925230399818,
+      "median_pearson": 0.35091437336673653,
+      "median_spearman": 0.34402566158781067,
+      "n_drugs": 413
+    },
+    "validation": {
+      "mean_pearson": 0.2716538898754218,
+      "mean_rmse": 1.3230329098253624,
+      "mean_spearman": 0.26203083361049073,
+      "median_pearson": 0.2767691999350594,
+      "median_spearman": 0.27408437462137447,
+      "n_drugs": 413
+    }
+  }
+}

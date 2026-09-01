@@ -1,0 +1,51 @@
+{
+  "target": {
+    "dataset": "GDSC",
+    "response": "LN_IC50",
+    "additional_log_transform": false
+  },
+  "architecture": {
+    "drug_encoder": "3-layer bond-aware GATv2",
+    "cell_encoder": "4-layer typed/direction-aware GATv2",
+    "num_kegg_pathways": 31,
+    "pathway_gene_occurrences": 712,
+    "unique_gene_tokens": 268,
+    "hidden_dimension": 64,
+    "transformer_layers": 2,
+    "transformer_heads": 8,
+    "transformer_ffn_dimension": 256,
+    "max_molecular_nodes": 96,
+    "edge_encoding": "scalar",
+    "edge_direction": "direction_aware_bidirectional"
+  },
+  "pretraining": {
+    "profiles": 591912,
+    "epochs": 6,
+    "batch_size": 32
+  },
+  "downstream_training": {
+    "batch_size": 32,
+    "maximum_epochs": 18,
+    "body_learning_rate": 0.0002,
+    "head_learning_rate": 0.0007,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 2,
+    "correlation_loss_weight": 0.2,
+    "correlation_start_epoch": 3,
+    "validation_checkpoint_metric": "PCC",
+    "early_stopping_patience": 5,
+    "minimum_validation_improvement": 0.001,
+    "split_seed": 42,
+    "optimization_seeds": [42, 123, 2026],
+    "fixed_dose_log10_uM": 1.0,
+    "fixed_time_hours": 72.0
+  },
+  "evaluation": {
+    "reported_metrics": [
+      "RMSE",
+      "MAE",
+      "pooled Pearson correlation",
+      "macro within-structure Pearson correlation"
+    ]
+  }
+}

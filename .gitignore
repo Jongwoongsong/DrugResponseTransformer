@@ -1,18 +1,37 @@
-# 대용량 데이터
-*.csv
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.ipynb_checkpoints/
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Runtime outputs
+*.log
+runs/
+cache/
+tmp/
+
+# Model weights / generated binary caches
 *.pt
 *.pth
-graph_cache/
-checkpoints_*/
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-nohup.out
+*.ckpt
+*.joblib
+*.pkl
 
-# 로그 (선택적으로 포함 가능)
-logs/
+# Raw source datasets are not redistributed
+*.gctx
+*.gct
+*.h5
+*.hdf5
+*.xlsx
+*.xls
 
-# 환경
-*.egg-info/
-dist/
-build/
+# Local environments
+.env
+.venv/
+venv/

@@ -9,9 +9,9 @@ import torch
 from torch_geometric.data import Data
 
 # =========================
-# 0) 설정 - LEARNABLE VERSION
+
 # =========================
-# 기존 heuristic 값은 초기값으로만 사용
+
 SUBTYPE_LIST = [
     "activation",        # 0
     "inhibition",        # 1
@@ -20,7 +20,7 @@ SUBTYPE_LIST = [
     "binding",           # 4
     "dissociation",      # 5
     "expression",        # 6
-    "repression",        # 7  (regression → repression 오타 수정)
+    "repression",
     "ubiquitination",    # 8
     "methylation",       # 9
     "unknown",           # 10 (fallback)
@@ -29,7 +29,7 @@ SUBTYPE_LIST = [
 SUBTYPE_TO_IDX = {name: idx for idx, name in enumerate(SUBTYPE_LIST)}
 NUM_EDGE_TYPES = len(SUBTYPE_LIST)
 
-# 초기값 (biological intuition 기반, 모델에서 learnable로 사용)
+
 SUBTYPE_INIT_VALUES = [
     1.0,   # activation
     -1.0,  # inhibition
@@ -45,7 +45,7 @@ SUBTYPE_INIT_VALUES = [
 ]
 
 # =========================
-# 1) 유틸
+
 # =========================
 def _find_all(elem, tag):
     return list(elem.findall(f".//{tag}")) + list(elem.findall(f".//{{*}}{tag}"))
@@ -59,7 +59,7 @@ def _open_xml_any(path):
         return ET.parse(path)
 
 # =========================
-# 2) KEGG KGML 파싱
+
 # =========================
 def parse_kegg_xml(file_path):
     tree = _open_xml_any(file_path)
@@ -104,7 +104,18 @@ def parse_kegg_xml(file_path):
         if e1 in entry_nodes and e2 in entry_nodes:
             for g1 in entry_nodes[e1]:
                 for g2 in entry_nodes[e2]:
-                    graph.add_edge(g1, g2, subtypes=subtypes)
+                    # Gene-level projection can map multiple KGML relation
+                    # records onto the same directed gene pair. Preserve all
+                    # relation subtypes instead of allowing nx.DiGraph's
+                    # last-write semantics to overwrite earlier annotations.
+                    if graph.has_edge(g1, g2):
+                        previous = graph[g1][g2].get("subtypes", [])
+                        merged = list(dict.fromkeys(
+                            list(previous) + list(subtypes)
+                        ))
+                        graph[g1][g2]["subtypes"] = merged
+                    else:
+                        graph.add_edge(g1, g2, subtypes=list(subtypes))
 
     return graph
 
@@ -113,8 +124,8 @@ def parse_kegg_xml(file_path):
 # =========================
 def get_edge_type_indices(subtypes):
     """
-    subtype 이름들 → index 리스트 반환
-    여러 subtype이 있으면 모두 반환
+    Return indices corresponding to the provided subtype names.
+    Return all matching indices when multiple subtypes are present.
     """
     indices = []
     for st in subtypes:
@@ -123,16 +134,16 @@ def get_edge_type_indices(subtypes):
             indices.append(SUBTYPE_TO_IDX[st_lower])
         else:
             indices.append(SUBTYPE_TO_IDX["unknown"])
-    
+
     if len(indices) == 0:
         indices.append(SUBTYPE_TO_IDX["unknown"])
-    
+
     return indices
 
 def get_edge_type_onehot(subtypes):
     """
-    Multi-hot encoding: 여러 subtype이 있을 수 있음
-    반환: [NUM_EDGE_TYPES] 크기의 binary vector
+    Multi-hot encoding allows multiple subtypes per edge.
+    Returns a binary vector of length NUM_EDGE_TYPES.
     """
     onehot = [0.0] * NUM_EDGE_TYPES
     indices = get_edge_type_indices(subtypes)
@@ -141,7 +152,7 @@ def get_edge_type_onehot(subtypes):
     return onehot
 
 # =========================
-# 4) Basal 값 보간 (동일)
+
 # =========================
 def estimate_expression_with_neighbors(
     graph,
@@ -190,13 +201,13 @@ def estimate_expression_with_neighbors(
     return expr
 
 # =========================
-# 5) networkx → PyG 변환 - LEARNABLE VERSION
+
 # =========================
 def nx_to_pyg(graph, basal_vector, use_onehot=True):
     """
-    - x: [N, 1] (보간된 basal expression)
+    - x: [N, 1] (interpolated basal expression)
     - edge_index: [2, E]
-    - edge_attr: [E, NUM_EDGE_TYPES] (multi-hot) 또는 [E, 1] (primary index)
+    - edge_attr: [E, NUM_EDGE_TYPES] (multi-hot) or [E, 1] (primary index)
     - node_ids: list of str(entrez)
     """
     nodes = list(graph.nodes)
@@ -217,16 +228,16 @@ def nx_to_pyg(graph, basal_vector, use_onehot=True):
     for u, v, attr in graph.edges(data=True):
         ei.append([node_idx[u], node_idx[v]])
         subtypes = attr.get("subtypes", [])
-        
+
         if use_onehot:
             ea.append(get_edge_type_onehot(subtypes))
         else:
-            # Primary index만 사용 (첫 번째 subtype)
+
             indices = get_edge_type_indices(subtypes)
             ea.append([float(indices[0])])
 
     edge_index = torch.tensor(ei, dtype=torch.long).t().contiguous() if ei else torch.empty((2, 0), dtype=torch.long)
-    
+
     if use_onehot:
         edge_attr = torch.tensor(ea, dtype=torch.float32) if ea else torch.empty((0, NUM_EDGE_TYPES), dtype=torch.float32)
     else:
@@ -240,7 +251,7 @@ def nx_to_pyg(graph, basal_vector, use_onehot=True):
     )
 
 # =========================
-# 6) 셀 그래프 생성
+
 # =========================
 def _list_kgml_files(kegg_pathway_dir):
     exts = (".xml", ".kgml", ".xml.gz", ".kgml.gz")
@@ -251,7 +262,7 @@ def _list_kgml_files(kegg_pathway_dir):
 def create_cell_line_graph(basal_df, kegg_pathway_dir, cell_iname, max_pathways=None, use_onehot=True):
     """
     basal_df: index = cell_iname, columns = Entrez(str)
-    반환: (graphs(list[Data]), count)
+    Returns: (graphs (list[Data]), count)
     """
     cell_iname = str(cell_iname)
     if cell_iname not in basal_df.index:
@@ -273,7 +284,7 @@ def create_cell_line_graph(basal_df, kegg_pathway_dir, cell_iname, max_pathways=
                 pyg.pathway_idx = idx
                 graphs.append(pyg)
         except Exception as e:
-            print(f"[경고] {fname} 처리 실패: {e}")
+            print(f"[WARNING] Failed to process {fname}: {e}")
             continue
 
     return graphs, len(graphs)

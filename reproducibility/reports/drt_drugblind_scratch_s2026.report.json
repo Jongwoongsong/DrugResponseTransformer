@@ -1,0 +1,519 @@
+{
+  "args": {
+    "alpha_corr": 0.2,
+    "amp": true,
+    "basal_csv": "${DRT_ROOT}/revision_work/20260729/canonical_gdsc970/harmonized_basal/GDSC970_basal_log2p1_genematch_lincs_clipz3_all970stats.csv",
+    "batch_size": 32,
+    "body_lr": 0.0002,
+    "cell_graph_cache": "${DRT_ROOT}/revision_work/20260811/edgeaware_druggat_v1/cache/cell_graph_cache_gdsc970_union_directionaware_bidir.pt",
+    "corr_start_epoch": 3,
+    "csv_path": "${DRT_ROOT}/revision_work/20260729/canonical_gdsc970/GDSC_with_SMILES_BGE_entrez_KEGG_canonical970.csv",
+    "device": "cuda:0",
+    "drug_graph_cache": "${DRT_ROOT}/revision_work/20260729/canonical_gdsc970/drug_graph_cache/drug_graph_cache_gdsc970_smiles413_cap96_pergraphpe.pt",
+    "edge_direction": "direction_aware_bidirectional",
+    "edge_encoding": "scalar",
+    "epochs": 18,
+    "fixed_dose": 1.0,
+    "fixed_time": 72.0,
+    "grad_clip": 1.0,
+    "head_lr": 0.0007,
+    "landmark_csv": "${DRT_ROOT}/kegg_lincs_landmark_overlap.csv",
+    "log_interval": 500,
+    "max_num_nodes": 96,
+    "min_delta": 0.001,
+    "mode": "scratch",
+    "num_pathways": 31,
+    "num_workers": 0,
+    "patience": 5,
+    "pretrained_checkpoint": null,
+    "run_name": "final_union_da_drugblind_scratch_full_s2026_bs32",
+    "save_dir": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints",
+    "seed": 2026,
+    "split_mode": "drug_blind",
+    "split_seed": 42,
+    "subset_ratio": 1.0,
+    "test_ratio": 0.1,
+    "valid_ratio": 0.1,
+    "warmup_epochs": 2,
+    "weight_decay": 0.0005
+  },
+  "best_epoch": 9,
+  "best_validation": {
+    "mae_ln_ic50": 1.9337032136494376,
+    "mse_ln_ic50": 6.157677782886844,
+    "n": 38903,
+    "pcc": 0.5626886740320971,
+    "rmse_ln_ic50": 2.4814668611300945,
+    "std_mse": 0.8475965566997696
+  },
+  "cache_hashes": {
+    "cell_graph_cache": "4a2293525ee0b0a1032dc64ac821566656c14e79033bfc9b21345ab9546292a0",
+    "drug_graph_cache": "647494a77c78c8a7ac38cc4474b17364e60f07a0367d9fea06c91d764708137d"
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "gradient_audit": {
+        "CellEncoder": 0.01223170624229772,
+        "DrugEncoder": 0.007664742035487657,
+        "Transformer": 0.011581523562798885,
+        "dose_proj": 0.001064241411504902,
+        "gene_embedding": 0.0005683176573593574,
+        "ic50_head": 0.9986936898583627,
+        "occurrence_score": 0.0005285448567742723,
+        "time_proj": 0.04757765558838618
+      },
+      "lrs": [
+        0.00035,
+        0.0001
+      ],
+      "train_loss": 0.4855204563401595,
+      "val": {
+        "mae_ln_ic50": 2.2458716206151395,
+        "mse_ln_ic50": 8.723805595165286,
+        "n": 38903,
+        "pcc": 0.35631124683889465,
+        "rmse_ln_ic50": 2.953608910327379,
+        "std_mse": 1.2008208022051303
+      }
+    },
+    {
+      "epoch": 2,
+      "gradient_audit": {
+        "CellEncoder": 0.06763796705052631,
+        "DrugEncoder": 0.5986195384673916,
+        "Transformer": 0.28107377365469116,
+        "dose_proj": 0.0011678589922089547,
+        "gene_embedding": 0.0026792123372906674,
+        "ic50_head": 0.745143464743736,
+        "occurrence_score": 0.005433632197542303,
+        "time_proj": 0.048177665483150556
+      },
+      "lrs": [
+        0.0007,
+        0.0002
+      ],
+      "train_loss": 0.3316831784218115,
+      "val": {
+        "mae_ln_ic50": 2.2809443665070535,
+        "mse_ln_ic50": 9.179703958189984,
+        "n": 38903,
+        "pcc": 0.39046194136447665,
+        "rmse_ln_ic50": 3.0298026269362803,
+        "std_mse": 1.2635746378458959
+      }
+    },
+    {
+      "epoch": 3,
+      "gradient_audit": {
+        "CellEncoder": 0.03810779720840922,
+        "DrugEncoder": 0.1465315149023524,
+        "Transformer": 0.10743453974515109,
+        "dose_proj": 0.00027952885525652513,
+        "gene_embedding": 0.0031556206970871302,
+        "ic50_head": 0.9823404870720381,
+        "occurrence_score": 0.00853781071787088,
+        "time_proj": 0.018852503265043404
+      },
+      "lrs": [
+        0.0006939473633270175,
+        0.00019827067523629075
+      ],
+      "train_loss": 0.3203023902478187,
+      "val": {
+        "mae_ln_ic50": 2.038262299038096,
+        "mse_ln_ic50": 6.889978243631425,
+        "n": 38903,
+        "pcc": 0.5178265231823259,
+        "rmse_ln_ic50": 2.6248768054199085,
+        "std_mse": 0.948396789078614
+      }
+    },
+    {
+      "epoch": 4,
+      "gradient_audit": {
+        "CellEncoder": 0.06969789309787079,
+        "DrugEncoder": 0.1852390355877485,
+        "Transformer": 0.13858609900809937,
+        "dose_proj": 0.00043791094018156396,
+        "gene_embedding": 0.007010434407133483,
+        "ic50_head": 0.9699916391201975,
+        "occurrence_score": 0.012510098256326919,
+        "time_proj": 0.020037866354833435
+      },
+      "lrs": [
+        0.0006760220527410553,
+        0.00019314915792601581
+      ],
+      "train_loss": 0.2998111722870973,
+      "val": {
+        "mae_ln_ic50": 1.9919171889430494,
+        "mse_ln_ic50": 7.04947375240758,
+        "n": 38903,
+        "pcc": 0.4819747867873816,
+        "rmse_ln_ic50": 2.655084509466239,
+        "std_mse": 0.9703511471331979
+      }
+    },
+    {
+      "epoch": 5,
+      "gradient_audit": {
+        "CellEncoder": 0.13414951660968555,
+        "DrugEncoder": 0.1843800186490018,
+        "Transformer": 0.1578443222449645,
+        "dose_proj": 0.00034591682820551625,
+        "gene_embedding": 0.010416000322856962,
+        "ic50_head": 0.9599073841388792,
+        "occurrence_score": 0.029394659693180548,
+        "time_proj": 0.02118866196334806
+      },
+      "lrs": [
+        0.0006469129278753018,
+        0.0001848322651072291
+      ],
+      "train_loss": 0.2862893606478816,
+      "val": {
+        "mae_ln_ic50": 1.9637526151926967,
+        "mse_ln_ic50": 6.502314026730709,
+        "n": 38903,
+        "pcc": 0.5354910861183447,
+        "rmse_ln_ic50": 2.549963534392347,
+        "std_mse": 0.8950352979295313
+      }
+    },
+    {
+      "epoch": 6,
+      "gradient_audit": {
+        "CellEncoder": 0.05848332926840164,
+        "DrugEncoder": 0.12976990988424486,
+        "Transformer": 0.10192544271580926,
+        "dose_proj": 0.00038981229886542315,
+        "gene_embedding": 0.005896608632317009,
+        "ic50_head": 0.9837159767296823,
+        "occurrence_score": 0.02306391255747674,
+        "time_proj": 0.02865300617990505
+      },
+      "lrs": [
+        0.0006077386360737625,
+        0.00017363961030678927
+      ],
+      "train_loss": 0.27569427429617066,
+      "val": {
+        "mae_ln_ic50": 2.020652938918766,
+        "mse_ln_ic50": 6.953355786277928,
+        "n": 38903,
+        "pcc": 0.5168960695665573,
+        "rmse_ln_ic50": 2.6369216496282037,
+        "std_mse": 0.9571206290547292
+      }
+    },
+    {
+      "epoch": 7,
+      "gradient_audit": {
+        "CellEncoder": 0.07148825656083892,
+        "DrugEncoder": 0.153777467003643,
+        "Transformer": 0.1302150449794099,
+        "dose_proj": 0.000607816710222025,
+        "gene_embedding": 0.007756318990434093,
+        "ic50_head": 0.976005557929081,
+        "occurrence_score": 0.02677086725434981,
+        "time_proj": 0.027579763686925978
+      },
+      "lrs": [
+        0.0005600046234011747,
+        0.00016000132097176422
+      ],
+      "train_loss": 0.26928219111107216,
+      "val": {
+        "mae_ln_ic50": 2.080656457965359,
+        "mse_ln_ic50": 7.631440122635802,
+        "n": 38903,
+        "pcc": 0.48845118939720367,
+        "rmse_ln_ic50": 2.7625061307870076,
+        "std_mse": 1.0504580784652349
+      }
+    },
+    {
+      "epoch": 8,
+      "gradient_audit": {
+        "CellEncoder": 0.03637070202243849,
+        "DrugEncoder": 0.05537978157967874,
+        "Transformer": 0.05832473439130084,
+        "dose_proj": 0.00026137054710786793,
+        "gene_embedding": 0.004272546511883002,
+        "ic50_head": 0.995789004271655,
+        "occurrence_score": 0.018435436328973372,
+        "time_proj": 0.014758824110931365
+      },
+      "lrs": [
+        0.0005055452811950033,
+        0.00014444150891285807
+      ],
+      "train_loss": 0.26305621764318426,
+      "val": {
+        "mae_ln_ic50": 1.9415378350912573,
+        "mse_ln_ic50": 6.300899543869154,
+        "n": 38903,
+        "pcc": 0.5462272723653236,
+        "rmse_ln_ic50": 2.510159266634122,
+        "std_mse": 0.8673108519234425
+      }
+    },
+    {
+      "epoch": 9,
+      "gradient_audit": {
+        "CellEncoder": 0.17679345105427854,
+        "DrugEncoder": 0.36613860729743386,
+        "Transformer": 0.3257969280126129,
+        "dose_proj": 0.0017788047010945003,
+        "gene_embedding": 0.020943759411363186,
+        "ic50_head": 0.8500966615205463,
+        "occurrence_score": 0.04843141873282701,
+        "time_proj": 0.04311083784252017
+      },
+      "lrs": [
+        0.00044645345143508043,
+        0.00012755812898145155
+      ],
+      "train_loss": 0.25896547417958465,
+      "val": {
+        "mae_ln_ic50": 1.9337032095433162,
+        "mse_ln_ic50": 6.157677758022776,
+        "n": 38903,
+        "pcc": 0.562688676056317,
+        "rmse_ln_ic50": 2.4814668561201407,
+        "std_mse": 0.847596551230048
+      }
+    },
+    {
+      "epoch": 10,
+      "gradient_audit": {
+        "CellEncoder": 0.1879135340533358,
+        "DrugEncoder": 0.17353464313911493,
+        "Transformer": 0.19077951313377228,
+        "dose_proj": 0.0011831920686725483,
+        "gene_embedding": 0.02062411763821644,
+        "ic50_head": 0.9454064137364581,
+        "occurrence_score": 0.05266158128200315,
+        "time_proj": 0.02587871695717072
+      },
+      "lrs": [
+        0.00038500000000000003,
+        0.00011000000000000002
+      ],
+      "train_loss": 0.2545754106072154,
+      "val": {
+        "mae_ln_ic50": 1.9906623366831901,
+        "mse_ln_ic50": 6.638590948526212,
+        "n": 38903,
+        "pcc": 0.5402593671505841,
+        "rmse_ln_ic50": 2.5765463218281583,
+        "std_mse": 0.9137936479477877
+      }
+    },
+    {
+      "epoch": 11,
+      "gradient_audit": {
+        "CellEncoder": 0.08883639471783246,
+        "DrugEncoder": 0.1321228620641072,
+        "Transformer": 0.1810892870870221,
+        "dose_proj": 0.0008049763315553409,
+        "gene_embedding": 0.010307545662807525,
+        "ic50_head": 0.96944027949709,
+        "occurrence_score": 0.02949640365496516,
+        "time_proj": 0.027644064279695436
+      },
+      "lrs": [
+        0.0003235465485649196,
+        9.244187101854847e-05
+      ],
+      "train_loss": 0.25090636158280466,
+      "val": {
+        "mae_ln_ic50": 2.124800616572577,
+        "mse_ln_ic50": 7.86194923764577,
+        "n": 38903,
+        "pcc": 0.4773590002602268,
+        "rmse_ln_ic50": 2.803916767246448,
+        "std_mse": 1.0821873621318812
+      }
+    },
+    {
+      "epoch": 12,
+      "gradient_audit": {
+        "CellEncoder": 0.1554592633843742,
+        "DrugEncoder": 0.5302605671832707,
+        "Transformer": 0.4029673705233708,
+        "dose_proj": 0.0007808125837631413,
+        "gene_embedding": 0.019499696635406738,
+        "ic50_head": 0.7260349641327554,
+        "occurrence_score": 0.047745724118669834,
+        "time_proj": 0.023624866742473605
+      },
+      "lrs": [
+        0.0002644547188049967,
+        7.555849108714192e-05
+      ],
+      "train_loss": 0.24859378514969627,
+      "val": {
+        "mae_ln_ic50": 2.1198191648521667,
+        "mse_ln_ic50": 7.7261399221788745,
+        "n": 38903,
+        "pcc": 0.45692852340912277,
+        "rmse_ln_ic50": 2.7795934814607106,
+        "std_mse": 1.0634933899807213
+      }
+    },
+    {
+      "epoch": 13,
+      "gradient_audit": {
+        "CellEncoder": 0.2932294680125362,
+        "DrugEncoder": 0.33818413851182877,
+        "Transformer": 0.4390834248818817,
+        "dose_proj": 0.002681956342875793,
+        "gene_embedding": 0.03249538709555636,
+        "ic50_head": 0.7702675300947748,
+        "occurrence_score": 0.0950110851139216,
+        "time_proj": 0.0402452819064213
+      },
+      "lrs": [
+        0.00020999537659882538,
+        5.9998679028235824e-05
+      ],
+      "train_loss": 0.24508305422838694,
+      "val": {
+        "mae_ln_ic50": 1.9919969347441018,
+        "mse_ln_ic50": 6.4640368548411695,
+        "n": 38903,
+        "pcc": 0.5422535112177169,
+        "rmse_ln_ic50": 2.542447021049046,
+        "std_mse": 0.88976649542693
+      }
+    },
+    {
+      "epoch": 14,
+      "gradient_audit": {
+        "CellEncoder": 0.10439715171870285,
+        "DrugEncoder": 0.08760222107466144,
+        "Transformer": 0.1485006933835965,
+        "dose_proj": 0.0005799820457605271,
+        "gene_embedding": 0.010287903655432978,
+        "ic50_head": 0.9786724173556381,
+        "occurrence_score": 0.025902033311931985,
+        "time_proj": 0.02487110270397766
+      },
+      "lrs": [
+        0.00016226136392623756,
+        4.6360389693210735e-05
+      ],
+      "train_loss": 0.24268732184348538,
+      "val": {
+        "mae_ln_ic50": 1.985950553983385,
+        "mse_ln_ic50": 6.721852748088706,
+        "n": 38903,
+        "pcc": 0.534134930521602,
+        "rmse_ln_ic50": 2.5926536112810568,
+        "std_mse": 0.925254527923059
+      }
+    }
+  ],
+  "label_mu": 2.2700102378679103,
+  "label_sd": 2.6953419882489915,
+  "model_config": {
+    "cell_encode_chunk_size": 0,
+    "dim_node": 64,
+    "dropout_ratio": 0.1,
+    "ffn_dim": 256,
+    "freeze_encoders": false,
+    "last_n_layers": 2,
+    "max_num_nodes": 96,
+    "num_pathways": 31,
+    "out_cell": 64,
+    "out_drug": 64,
+    "pe_dim": 1,
+    "transformer_heads": 8,
+    "transformer_layers": 2,
+    "unfreeze_pool_query": true,
+    "unfreeze_time_dose": true,
+    "unfreeze_type_embed": true,
+    "use_gradient_checkpointing": false,
+    "use_pathway_batching": true
+  },
+  "paths": {
+    "checkpoint": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.pth",
+    "report": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.report.json",
+    "test_per_drug": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.test_per_drug_metrics.csv",
+    "test_predictions": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.test_predictions.csv",
+    "val_per_drug": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.val_per_drug_metrics.csv",
+    "val_predictions": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_drugblind_scratch_full_s2026_bs32/checkpoints/final_union_da_drugblind_scratch_full_s2026_bs32_20260816-061938.val_predictions.csv"
+  },
+  "per_drug_macro_pcc": {
+    "test": 0.4306726161428026,
+    "validation": 0.46863301765383997
+  },
+  "prediction_order_max_abs_delta": {
+    "test": 4.719848636369761e-07,
+    "validation": 4.767456047716223e-07
+  },
+  "split_active": {
+    "test": 42448,
+    "train": 334320,
+    "validation": 38903
+  },
+  "split_full": {
+    "test": 42448,
+    "train": 334320,
+    "validation": 38903
+  },
+  "test": {
+    "mae_ln_ic50": 2.299637768897015,
+    "mse_ln_ic50": 9.790403421647715,
+    "n": 42448,
+    "pcc": 0.16385366538864407,
+    "rmse_ln_ic50": 3.128962035827171,
+    "std_mse": 1.347636638687347
+  },
+  "token_audit": {
+    "aggregation_impl": "vectorized_segment_softmax",
+    "architecture": "dose+time+atom+268_unique_gene_tokens+token_preserving_cell_dedup",
+    "batch_size": 16,
+    "cell_batch_size": 16,
+    "cell_dedup_fraction": 0.0,
+    "cell_duplicate_count": 0,
+    "cell_occurrence_tokens": [
+      16,
+      712,
+      64
+    ],
+    "cell_unique_count": 16,
+    "cell_unique_gene_tokens": [
+      16,
+      268,
+      64
+    ],
+    "cell_unique_gene_tokens_encoded": [
+      16,
+      268,
+      64
+    ],
+    "cell_unique_gene_tokens_expanded": [
+      16,
+      268,
+      64
+    ],
+    "num_landmark_genes": 268,
+    "occurrences_per_gene_max": 16.0,
+    "occurrences_per_gene_mean": 2.6567163467407227,
+    "occurrences_per_gene_min": 1.0,
+    "pathway_batching": true,
+    "transformer_input": [
+      16,
+      366,
+      64
+    ],
+    "unique_gene_coverage_max": 268,
+    "unique_gene_coverage_min": 268,
+    "valid_tokens_max": 301,
+    "valid_tokens_min": 301
+  },
+  "transfer_audit": null
+}
