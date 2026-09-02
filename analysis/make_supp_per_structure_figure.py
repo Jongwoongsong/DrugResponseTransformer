@@ -375,20 +375,10 @@ def main():
         "Drug-blind performance across 41 held-out molecular structures"
     )
 
-    ax.text(
-        0.01,
-        0.02,
-        "Each point represents one held-out canonical structure; "
-        "diamonds indicate means.",
-        transform=ax.transAxes,
-        fontsize=9,
-        va="bottom",
-    )
-
     fig.tight_layout()
 
-    pdf = output / "Figure_S_per_structure_PCC_distribution.pdf"
-    png = output / "Figure_S_per_structure_PCC_distribution.png"
+    pdf = output / "Figure_S2_per_structure_PCC_distribution.pdf"
+    png = output / "Figure_S2_per_structure_PCC_distribution.png"
 
     fig.savefig(
         pdf,
@@ -403,7 +393,7 @@ def main():
     plt.close(fig)
 
     caption = (
-        "Supplementary Figure Sx. Distribution of within-structure "
+        "Supplementary Figure S2. Distribution of within-structure "
         "Pearson correlation coefficients across the 41 canonical-SMILES "
         "structures held out from downstream GDSC IC50 supervision. "
         "Each point represents the correlation between observed and "
@@ -420,7 +410,7 @@ def main():
     )
 
     (
-        output / "Figure_S_caption.txt"
+        output / "Figure_S2_caption.txt"
     ).write_text(
         caption + "\n",
         encoding="utf-8",
