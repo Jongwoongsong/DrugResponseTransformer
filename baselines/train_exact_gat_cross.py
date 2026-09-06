@@ -282,7 +282,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--feature_cache", required=True)
     parser.add_argument("--drug_graph_cache", required=True)
-    parser.add_argument("--model_dir", required=True)
+    parser.add_argument(
+        "--model_dir",
+        default=str(Path(__file__).resolve().parent / "gat_cross_reference"),
+        help="Directory containing kci_model_gat.py",
+    )
     parser.add_argument("--output_dir", required=True)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--seed", type=int, default=42)

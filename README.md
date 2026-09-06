@@ -131,3 +131,65 @@ Exact RDKit canonical-structure matching against the final 591,912-profile LINCS
 The exact-unexposed subset was evaluated separately across optimization seeds 42, 123, and 2026. Pretrained DRT did not show a consistent advantage over scratch training in this subset (RMSE 3.1797 ± 0.1881 vs. 3.1077 ± 0.0418; pooled PCC 0.1777 ± 0.1734 vs. 0.2855 ± 0.0715). These results distinguish exact pretraining exposure from downstream GDSC structure holdout; they do not constitute a scaffold-novel or pretraining-excluded retraining experiment.
 
 Public derived outputs are provided in `results/lincs_exposure/`. The exact-overlap audit can be recomputed from locally obtained LINCS data using `analysis/audit_lincs_exact_exposure.py`.
+
+## Baseline reproduction
+
+### GAT-Cross
+
+The GAT-Cross implementation used for the reported mixed-split comparison is
+included under `baselines/gat_cross_reference/kci_model_gat.py`.
+The preserved module is the provenance-audited implementation used in the
+reported experiment.
+
+Example command:
+
+    python baselines/train_exact_gat_cross.py \
+      --feature_cache /path/to/prepared_949_feature_cache \
+      --drug_graph_cache /path/to/drug_graph_cache.pkl \
+      --output_dir /path/to/output/gat_cross \
+      --device cuda:0 \
+      --seed 42 \
+      --epochs 50 \
+      --batch_size 64 \
+      --hidden_dim 128 \
+      --embed_dim 256 \
+      --num_heads 8 \
+      --gat_heads 4 \
+      --dropout 0.2 \
+      --lr 1e-4 \
+      --weight_decay 0.01 \
+      --patience 10
+
+The required feature cache can be prepared from locally obtained source data
+using `baselines/prepare_exact_949_cache.py`. Raw GDSC and expression data are
+not redistributed.
+
+### CSG2A
+
+`baselines/train_exact_csg2a.py` is a wrapper around the external CSG2A
+reference implementation. The original CSG2A source tree and LINCS-pretrained
+checkpoint must be obtained separately and are not redistributed in this
+repository.
+
+Example command:
+
+    python baselines/train_exact_csg2a.py \
+      --feature_cache /path/to/prepared_949_feature_cache \
+      --csg2a_root /path/to/CSG2A/source \
+      --pretrained_checkpoint /path/to/CSG2A/pretrained_checkpoint.pth \
+      --output_dir /path/to/output/csg2a \
+      --device cuda:0 \
+      --seed 42 \
+      --batch_size 128 \
+      --max_epochs 200 \
+      --patience 20 \
+      --lr_init 1e-4 \
+      --lr_final 1e-5 \
+      --weight_decay 1e-5 \
+      --dropout 0.1 \
+      --gene_hdim 64 \
+      --finetune_hdim1 512 \
+      --finetune_hdim2 64
+
+The wrapper freezes the pretrained CSG2A backbone and uses validation MSE as
+the primary checkpoint-selection criterion, matching the reported comparison.
