@@ -27,6 +27,10 @@ SUBTYPE_LIST = [
 ]
 
 SUBTYPE_TO_IDX = {name: idx for idx, name in enumerate(SUBTYPE_LIST)}
+
+# KEGG KGML uses "binding/association" for binding relations.
+# Normalize this official subtype name to the model's binding channel.
+SUBTYPE_TO_IDX["binding/association"] = SUBTYPE_TO_IDX["binding"]
 NUM_EDGE_TYPES = len(SUBTYPE_LIST)
 
 
