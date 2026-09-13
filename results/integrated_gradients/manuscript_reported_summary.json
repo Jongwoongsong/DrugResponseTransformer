@@ -1,0 +1,107 @@
+{
+  "aggregate_gene_ranking": {
+    "spearman_ig_vs_condition_attention": 0.16708924364435704,
+    "spearman_ig_vs_pool_alpha": -0.15847041888423466,
+    "top20_overlap_ig_vs_condition_attention": {
+      "jaccard": 0.08108108108108109,
+      "overlap_fraction": 0.15,
+      "overlap_n": 3
+    },
+    "top20_overlap_ig_vs_pool_alpha": {
+      "jaccard": 0.02564102564102564,
+      "overlap_fraction": 0.05,
+      "overlap_n": 1
+    }
+  },
+  "analysis": "representation_level_integrated_gradients_v2",
+  "attention_prediction_equivalence_abs_delta": {
+    "mean": 2.697362738140559e-07,
+    "median": 2.384185791015625e-07,
+    "n": 413,
+    "sd": 2.9077356404337625e-07
+  },
+  "attention_reference": "final Transformer layer; mean across heads; dose-query plus time-query attention to each gene token",
+  "baseline": "learned gene-identity embeddings for the 268 pathway-aggregated gene-token positions; drug atom tokens, dose/time context, token masks, and fitted parameters held fixed",
+  "baseline_mode": "gene_embedding",
+  "checkpoint": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_mixed_pretrained_full_s42_bs32/checkpoints/final_union_da_mixed_pretrained_full_s42_bs32_20260814-011708.pth",
+  "checkpoint_sha256": "cb9434a0e1d2e28e0328ffcc1720da5cf2555555382b11bbc3e392c8a7c9126c",
+  "ig_completeness_relative_abs": {
+    "mean": 0.039793235288373204,
+    "median": 0.008179817583400004,
+    "n": 413,
+    "sd": 0.16867899057694496
+  },
+  "ig_steps": 128,
+  "manuscript_quadrature_points": 128,
+  "manuscript_reported_run": true,
+  "optimization_seed": 42,
+  "prediction_equivalence_abs_delta": {
+    "mean": 2.697362738140559e-07,
+    "median": 2.384185791015625e-07,
+    "n": 413,
+    "sd": 2.9077356404337625e-07
+  },
+  "quadrature": "gauss_legendre",
+  "sample_level": {
+    "spearman_ig_vs_condition_attention": {
+      "mean": 0.09519574270410988,
+      "median": 0.09345923155618256,
+      "n": 413,
+      "sd": 0.09890401606961051
+    },
+    "spearman_ig_vs_pool_alpha": {
+      "mean": -0.011332655078152497,
+      "median": -0.010687342702551733,
+      "n": 413,
+      "sd": 0.11512684817011246
+    },
+    "top20_overlap_fraction_ig_vs_condition_attention": {
+      "mean": 0.137772397094431,
+      "median": 0.15,
+      "n": 413,
+      "sd": 0.07440297332844821
+    },
+    "top20_overlap_fraction_ig_vs_pool_alpha": {
+      "mean": 0.0728813559322034,
+      "median": 0.05,
+      "n": 413,
+      "sd": 0.06359518487986775
+    }
+  },
+  "secondary_reference": "final learned attention-pooling alpha for each gene token",
+  "selection": {
+    "all_test_structures": false,
+    "n_samples": 413,
+    "n_structures": 413,
+    "per_structure_unique_cell_lines": 1,
+    "selection_seed": 42
+  },
+  "split_mode": "mixed",
+  "split_seed": 42,
+  "structure_level": {
+    "spearman_ig_vs_condition_attention": {
+      "mean": 0.09519574270410988,
+      "median": 0.09345923155618256,
+      "n": 413,
+      "sd": 0.09890401606961051
+    },
+    "spearman_ig_vs_pool_alpha": {
+      "mean": -0.011332655078152497,
+      "median": -0.010687342702551733,
+      "n": 413,
+      "sd": 0.11512684817011246
+    },
+    "top20_overlap_fraction_ig_vs_condition_attention": {
+      "mean": 0.137772397094431,
+      "median": 0.15,
+      "n": 413,
+      "sd": 0.07440297332844821
+    },
+    "top20_overlap_fraction_ig_vs_pool_alpha": {
+      "mean": 0.0728813559322034,
+      "median": 0.05,
+      "n": 413,
+      "sd": 0.06359518487986775
+    }
+  }
+}

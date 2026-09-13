@@ -300,3 +300,43 @@ training provenance are provided in
 itself is not redistributed in the current public release. A sanitized report
 for the selected run is provided in
 `reproducibility/reports/final_lincs_pretraining.report.json`.
+
+## Integrated Gradients analysis
+
+The representation-level Integrated Gradients (IG) analysis reported in the
+manuscript used the mixed-split pretrained DRT checkpoint (split seed 42,
+optimization seed 42).
+
+One test observation was selected for each of 413 canonical molecular
+structures. IG was evaluated at the 268 pathway-aggregated gene-token
+positions using the learned gene-identity embeddings as the baseline while
+drug atom tokens, dose/time context, token masks, and fitted parameters were
+held fixed.
+
+The manuscript-reported agreement statistics correspond to a 128-point
+Gauss-Legendre quadrature run. A separate 64-point convergence run produced
+nearly identical agreement estimates.
+
+Example:
+
+```bash
+IG_BASELINE_MODE=gene_embedding \
+IG_QUADRATURE=gauss_legendre \
+python analysis/integrated_gradients/run_final_mixed_ig_v2.py \
+  --checkpoint /path/to/final_mixed_pretrained_seed42_checkpoint.pth \
+  --device cuda:0 \
+  --steps 128 \
+  --per_structure 1 \
+  --max_structures 0 \
+  --selection_seed 42 \
+  --equivalence_tol 5e-6 \
+  --out /path/to/ig_output
+```
+
+The v2 script replaces only the numerical IG integration routine while
+retaining the audited model loading, sample selection, attention extraction,
+and evaluation workflow implemented in `analysis/integrated_gradients/run_final_mixed_ig.py`.
+
+Public derived outputs are provided under `results/integrated_gradients/`.
+`manuscript_reported_summary.json` records the reported run configuration,
+checkpoint SHA256, and agreement statistics.
