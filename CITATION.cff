@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use DrugResponseTransformer or materials from this repository, please cite this software repository and the associated manuscript."
+title: "DrugResponseTransformer"
+type: software
+authors:
+  - family-names: Song
+    given-names: Jongung
+  - family-names: Jung
+    given-names: Jinmyung
+  - family-names: Yoo
+    given-names: Sunyong
+    orcid: "https://orcid.org/0000-0003-0925-1853"
+repository-code: "https://github.com/Jongwoongsong/DrugResponseTransformer"
+url: "https://github.com/Jongwoongsong/DrugResponseTransformer"
+abstract: "Reproducibility code and materials for Interpretable Prediction of Drug Sensitivity via Transfer Learning Based on Biological Graphs."
+keywords:
+  - drug sensitivity prediction
+  - pharmacogenomics
+  - graph neural networks
+  - transfer learning
+  - biological graphs

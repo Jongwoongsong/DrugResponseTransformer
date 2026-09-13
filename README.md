@@ -107,7 +107,7 @@ are fitted using training cells only.
 
 Final-aligned pretrained DRT was repeated with optimization seeds 42, 123, and
 2026 and achieved RMSE 1.4110 ± 0.0094, MAE 1.0552 ± 0.0095, pooled PCC
-0.8630 ± 0.0026, and macro per-drug PCC 0.3098 ± 0.0203. The final-aligned
+0.8630 ± 0.0026, and macro per-drug PCC 0.3097 ± 0.0203. The final-aligned
 scratch seed-42 run achieved RMSE 1.3962, MAE 1.0443, pooled PCC 0.8639, and
 macro per-drug PCC 0.3245. These results do not provide evidence of a
 consistent downstream benefit from perturbation pretraining in the held-out-cell
