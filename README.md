@@ -29,6 +29,8 @@ The analysis evaluates predictive performance, generalization, architectural con
 
 ## Data and response variable
 
+Detailed input schemas and preprocessing steps are documented in [`docs/DATA_PREPARATION.md`](docs/DATA_PREPARATION.md).
+
 Raw LINCS, GDSC, Cell Model Passports, and KEGG source data are not redistributed.
 
 The KEGG pathway identifiers used in the study are listed in `resources/kegg_pathway_ids.txt`.
