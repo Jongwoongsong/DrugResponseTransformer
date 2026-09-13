@@ -239,3 +239,62 @@ python final_union_da_ic50_finetune.py \
 The exact drug-blind response-row assignments used in the manuscript are
 provided under `splits/drug_blind/`. Checkpoint hashes, selected epochs, and
 test metrics are recorded in `reproducibility/drt_drugblind_run_index.tsv`.
+
+## Reproducing LINCS pretraining
+
+The final reported backbone was trained with split seed 42 and optimization
+seed 42 for six epochs. The command below reproduces the reported training
+configuration given locally obtained source data and prepared graph caches.
+
+Raw LINCS and KEGG resources are not redistributed and must be obtained from
+their original providers under the applicable terms.
+
+```bash
+python pge_pretrain_da_bidir_union.py \
+  --mode train \
+  --perturbed_csv /path/to/pretraining_profiles.csv \
+  --basal_csv /path/to/lincs_basal_expression.csv \
+  --kegg_pathway_dir /path/to/kegg_pathway_files \
+  --landmark_csv /path/to/kegg_lincs_landmark_overlap.csv \
+  --cache_dir /path/to/runtime_cache \
+  --drug_graph_cache /path/to/drug_graph_cache.pt \
+  --cell_graph_cache /path/to/cell_graph_cache.pt \
+  --cache_scope all \
+  --save_dir /path/to/output/checkpoints \
+  --run_name da_union_pge_full_ep6_bs32_s42 \
+  --device cuda:0 \
+  --num_workers 0 \
+  --valid_ratio 0.1 \
+  --test_ratio 0.1 \
+  --split_seed 42 \
+  --split_mode mixed \
+  --epochs 6 \
+  --batch_size 32 \
+  --grad_clip 1.0 \
+  --warmup_epochs 1 \
+  --accum_steps 1 \
+  --body_lr 2e-4 \
+  --head_lr 7e-4 \
+  --weight_decay 5e-4 \
+  --dim_node 64 \
+  --dim_drug 64 \
+  --dim_cell 64 \
+  --transformer_layers 2 \
+  --transformer_heads 8 \
+  --dropout_ratio 0.1 \
+  --max_num_nodes 96 \
+  --ffn_dim 256 \
+  --pe_dim 1 \
+  --num_pathways 31 \
+  --use_pathway_batching \
+  --seed 42 \
+  --zscore_by_gene \
+  --amp
+```
+
+The selected backbone was the epoch-6 checkpoint. Its SHA256 digest and
+training provenance are provided in
+`reproducibility/provenance/final_pretraining.tsv`. The checkpoint binary
+itself is not redistributed in the current public release. A sanitized report
+for the selected run is provided in
+`reproducibility/reports/final_lincs_pretraining.report.json`.
