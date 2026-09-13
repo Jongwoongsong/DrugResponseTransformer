@@ -193,3 +193,49 @@ Example command:
 
 The wrapper freezes the pretrained CSG2A backbone and uses validation MSE as
 the primary checkpoint-selection criterion, matching the reported comparison.
+
+## Reproducing the reported drug-blind DRT run
+
+The exact arguments and provenance of the reported runs are preserved in
+`reproducibility/reports/`. The following reproduces the reported pretrained
+DRT configuration for split seed 42 and optimization seed 42, given locally
+prepared input files and the selected LINCS checkpoint.
+
+```bash
+python final_union_da_ic50_finetune.py \
+  --csv_path /path/to/gdsc_processed.csv \
+  --basal_csv /path/to/gdsc_basal_expression.csv \
+  --landmark_csv /path/to/kegg_lincs_landmark_overlap.csv \
+  --drug_graph_cache /path/to/drug_graph_cache.pt \
+  --cell_graph_cache /path/to/cell_graph_cache.pt \
+  --pretrained_checkpoint /path/to/da_union_pge_full_ep6_bs32_s42_checkpoint.pth \
+  --save_dir /path/to/output \
+  --run_name drt_drugblind_pretrained_s42 \
+  --split_mode drug_blind \
+  --split_seed 42 \
+  --seed 42 \
+  --epochs 18 \
+  --batch_size 32 \
+  --num_workers 0 \
+  --fixed_dose 1.0 \
+  --fixed_time 72.0 \
+  --body_lr 2e-4 \
+  --head_lr 7e-4 \
+  --weight_decay 5e-4 \
+  --warmup_epochs 2 \
+  --alpha_corr 0.2 \
+  --corr_start_epoch 3 \
+  --patience 5 \
+  --min_delta 0.001 \
+  --grad_clip 1.0 \
+  --max_num_nodes 96 \
+  --num_pathways 31 \
+  --mode pretrained \
+  --edge_encoding scalar \
+  --edge_direction direction_aware_bidirectional \
+  --amp
+```
+
+The exact drug-blind response-row assignments used in the manuscript are
+provided under `splits/drug_blind/`. Checkpoint hashes, selected epochs, and
+test metrics are recorded in `reproducibility/drt_drugblind_run_index.tsv`.
