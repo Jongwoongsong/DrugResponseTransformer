@@ -1,0 +1,18 @@
+{
+  "interpretation": "Standalone Global MLP and final residual-hybrid feature caches use identical train/validation/test source-row order and labels.",
+  "test": {
+    "maximum_absolute_label_difference": 0.0,
+    "n": 41567,
+    "source_row_order_identical": true
+  },
+  "train": {
+    "maximum_absolute_label_difference": 0.0,
+    "n": 332537,
+    "source_row_order_identical": true
+  },
+  "validation": {
+    "maximum_absolute_label_difference": 0.0,
+    "n": 41567,
+    "source_row_order_identical": true
+  }
+}

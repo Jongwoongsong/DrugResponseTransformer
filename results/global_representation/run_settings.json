@@ -1,0 +1,48 @@
+{
+  "global_mlp": {
+    "alpha_corr": 0.1,
+    "amp": true,
+    "batch_size": 2048,
+    "best_epoch": 15,
+    "corr_start_epoch": 2,
+    "dropout": 0.15,
+    "epochs": 20,
+    "grad_clip": 1.0,
+    "learning_rate": 0.0005,
+    "min_delta": 0.0005,
+    "num_workers": 0,
+    "patience": 5,
+    "seed": 42,
+    "source": "20260802 manuscript-canonical standalone run",
+    "task": "global",
+    "weight_decay": 0.0001
+  },
+  "residual_hybrid": {
+    "args": {
+      "alpha_corr": 0.1,
+      "amp": true,
+      "batch_size": 2048,
+      "bio_prediction_dir": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/final_core_predictions",
+      "corr_start_epoch": 2,
+      "device": "cuda:0",
+      "dropout": 0.15,
+      "epochs": 20,
+      "feature_cache": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/cache/exact_final_mixed_s42_fp1024_expr1954",
+      "grad_clip": 1.0,
+      "init_checkpoint": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/global_mlp/results/global_best.pth",
+      "lambda_delta": 0.01,
+      "log_interval": 50,
+      "lr": 0.0003,
+      "min_delta": 0.0005,
+      "num_workers": 0,
+      "output_dir": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results",
+      "patience": 5,
+      "seed": 42,
+      "task": "residual",
+      "weight_decay": 0.0001
+    },
+    "best_epoch": 9,
+    "source": "20260820/21 final-core-aligned manuscript run",
+    "task": "residual"
+  }
+}

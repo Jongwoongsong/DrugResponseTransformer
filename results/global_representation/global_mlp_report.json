@@ -1,0 +1,45 @@
+{
+  "best_epoch": 15,
+  "best_validation": {
+    "mae_ln_ic50": 0.7679819536139979,
+    "mse_ln_ic50": 1.0869638594018607,
+    "n": 41567,
+    "pcc": 0.9253274671942416,
+    "rmse_ln_ic50": 1.0425755892988577
+  },
+  "checkpoint": "${DRT_ROOT}/revision_work/20260802/frozen_residual_hybrid_v1/runs/global_mlp_mixed_s42_bs2048/results/global_best.pth",
+  "final": {
+    "test": {
+      "metrics": {
+        "mae_ln_ic50": 0.773826075490443,
+        "mse_ln_ic50": 1.1044775054096356,
+        "n": 41567,
+        "pcc": 0.9246131782066788,
+        "rmse_ln_ic50": 1.0509412473633508
+      },
+      "per_drug_macro_pcc": 0.6803970041980927
+    },
+    "validation": {
+      "metrics": {
+        "mae_ln_ic50": 0.7679819536139979,
+        "mse_ln_ic50": 1.0869638594018607,
+        "n": 41567,
+        "pcc": 0.9253274671942421,
+        "rmse_ln_ic50": 1.0425755892988577
+      },
+      "per_drug_macro_pcc": 0.6883930009537903
+    }
+  },
+  "paths": {
+    "test": {
+      "per_drug": "${DRT_ROOT}/revision_work/20260802/frozen_residual_hybrid_v1/runs/global_mlp_mixed_s42_bs2048/results/global.test_per_drug.csv",
+      "predictions": "${DRT_ROOT}/revision_work/20260802/frozen_residual_hybrid_v1/runs/global_mlp_mixed_s42_bs2048/results/global.test_predictions.csv"
+    },
+    "validation": {
+      "per_drug": "${DRT_ROOT}/revision_work/20260802/frozen_residual_hybrid_v1/runs/global_mlp_mixed_s42_bs2048/results/global.validation_per_drug.csv",
+      "predictions": "${DRT_ROOT}/revision_work/20260802/frozen_residual_hybrid_v1/runs/global_mlp_mixed_s42_bs2048/results/global.validation_predictions.csv"
+    }
+  },
+  "recovered_after_report_path_bug": true,
+  "task": "global"
+}

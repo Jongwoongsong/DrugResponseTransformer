@@ -340,3 +340,21 @@ and evaluation workflow implemented in `analysis/integrated_gradients/run_final_
 Public derived outputs are provided under `results/integrated_gradients/`.
 `manuscript_reported_summary.json` records the reported run configuration,
 checkpoint SHA256, and agreement statistics.
+
+## Global representation and residual-hybrid analyses
+
+Reproducibility code and manuscript-canonical results for the standalone
+Global MLP and frozen-core residual hybrid are provided under:
+
+- `analysis/global_representation/`
+- `results/global_representation/`
+
+Both analyses use a 1,024-bit radius-2 Morgan fingerprint and the 1,954-gene
+harmonized basal-expression representation.
+
+The exact mixed-split equivalence audit confirms identical source-row order
+and labels across the standalone Global MLP and final residual-hybrid
+train/validation/test feature caches.
+
+See `analysis/global_representation/README.md` for the reported run settings
+and metrics.

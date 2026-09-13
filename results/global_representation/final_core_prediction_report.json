@@ -1,0 +1,53 @@
+{
+  "checkpoint": "${DRT_ROOT}/revision_work/20260811/da_bidir_pge_v2_union/runs/final_union_da_mixed_pretrained_full_s42_bs32/checkpoints/final_union_da_mixed_pretrained_full_s42_bs32_20260814-011708.pth",
+  "checkpoint_epoch": 18,
+  "frozen_expected_test": {
+    "mae_ln_ic50": 0.9205,
+    "pcc": 0.894,
+    "rmse_ln_ic50": 1.2394
+  },
+  "reproduction_audit": {
+    "mae_ln_ic50": {
+      "abs_delta": 1.4144730160481345e-06,
+      "expected": 0.9205,
+      "observed": 0.920501414473016,
+      "pass": true,
+      "tolerance": 0.002
+    },
+    "pcc": {
+      "abs_delta": 3.25876549476245e-05,
+      "expected": 0.894,
+      "observed": 0.8940325876549476,
+      "pass": true,
+      "tolerance": 0.002
+    },
+    "rmse_ln_ic50": {
+      "abs_delta": 3.8571975835566263e-08,
+      "expected": 1.2394,
+      "observed": 1.239400038571976,
+      "pass": true,
+      "tolerance": 0.002
+    }
+  },
+  "splits": {
+    "test": {
+      "mae_ln_ic50": 0.920501414473016,
+      "n": 41567,
+      "pcc": 0.8940325876549476,
+      "rmse_ln_ic50": 1.239400038571976
+    },
+    "train": {
+      "mae_ln_ic50": 0.8991978433518755,
+      "n": 332537,
+      "pcc": 0.8985948665401178,
+      "rmse_ln_ic50": 1.207108304908219
+    },
+    "validation": {
+      "mae_ln_ic50": 0.9144075006577498,
+      "n": 41567,
+      "pcc": 0.8948552710620413,
+      "rmse_ln_ic50": 1.2313203429964714
+    }
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,267 @@
+{
+  "args": {
+    "alpha_corr": 0.1,
+    "amp": true,
+    "batch_size": 2048,
+    "bio_prediction_dir": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/final_core_predictions",
+    "corr_start_epoch": 2,
+    "device": "cuda:0",
+    "dropout": 0.15,
+    "epochs": 20,
+    "feature_cache": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/cache/exact_final_mixed_s42_fp1024_expr1954",
+    "grad_clip": 1.0,
+    "init_checkpoint": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/global_mlp/results/global_best.pth",
+    "lambda_delta": 0.01,
+    "log_interval": 50,
+    "lr": 0.0003,
+    "min_delta": 0.0005,
+    "num_workers": 0,
+    "output_dir": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results",
+    "patience": 5,
+    "seed": 42,
+    "task": "residual",
+    "weight_decay": 0.0001
+  },
+  "best_epoch": 9,
+  "best_validation": {
+    "mae_ln_ic50": 0.7613341231103439,
+    "mse_ln_ic50": 1.0806473952025015,
+    "n": 41567,
+    "pcc": 0.9259341042590854,
+    "rmse_ln_ic50": 1.0395419160392243
+  },
+  "checkpoint": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results/residual_best.pth",
+  "final": {
+    "test": {
+      "bio_metrics": {
+        "mae_ln_ic50": 0.920501414473016,
+        "mse_ln_ic50": 1.5361124556122154,
+        "n": 41567,
+        "pcc": 0.8940325876549483,
+        "rmse_ln_ic50": 1.239400038571976
+      },
+      "correction": {
+        "mean": 0.02881849101831144,
+        "mean_abs": 0.5432096759354454,
+        "median_abs": 0.38194364309310913,
+        "p90_abs": 1.2170423984527592,
+        "p95_abs": 1.6105796098709106
+      },
+      "metrics": {
+        "mae_ln_ic50": 0.7692860701829545,
+        "mse_ln_ic50": 1.1044739040853306,
+        "n": 41567,
+        "pcc": 0.92474582978338,
+        "rmse_ln_ic50": 1.0509395339815373
+      },
+      "per_drug_macro_pcc": 0.6873853966003332
+    },
+    "validation": {
+      "bio_metrics": {
+        "mae_ln_ic50": 0.9144075006577498,
+        "mse_ln_ic50": 1.5161497870769483,
+        "n": 41567,
+        "pcc": 0.8948552710620411,
+        "rmse_ln_ic50": 1.2313203429964714
+      },
+      "correction": {
+        "mean": 0.028462976363643953,
+        "mean_abs": 0.5435397068857184,
+        "median_abs": 0.37925490736961365,
+        "p90_abs": 1.2122568607330324,
+        "p95_abs": 1.625318348407745
+      },
+      "metrics": {
+        "mae_ln_ic50": 0.7613341231103439,
+        "mse_ln_ic50": 1.0806473952025015,
+        "n": 41567,
+        "pcc": 0.9259341042590854,
+        "rmse_ln_ic50": 1.0395419160392243
+      },
+      "per_drug_macro_pcc": 0.6991109761084063
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "lr": 0.0003,
+      "train_loss": 0.14989678877391138,
+      "validation": {
+        "mae_ln_ic50": 0.7929859196311625,
+        "mse_ln_ic50": 1.152934390299759,
+        "n": 41567,
+        "pcc": 0.9210178875986655,
+        "rmse_ln_ic50": 1.0737478243515834
+      }
+    },
+    {
+      "epoch": 2,
+      "lr": 0.0002982455885348071,
+      "train_loss": 0.13592818200460247,
+      "validation": {
+        "mae_ln_ic50": 0.7814056976722162,
+        "mse_ln_ic50": 1.1218977596962194,
+        "n": 41567,
+        "pcc": 0.9229217198007329,
+        "rmse_ln_ic50": 1.0591967521174805
+      }
+    },
+    {
+      "epoch": 3,
+      "lr": 0.0002930255535720594,
+      "train_loss": 0.12935773253235805,
+      "validation": {
+        "mae_ln_ic50": 0.7738983878090128,
+        "mse_ln_ic50": 1.1016688137190391,
+        "n": 41567,
+        "pcc": 0.9243523950546686,
+        "rmse_ln_ic50": 1.0496041223809285
+      }
+    },
+    {
+      "epoch": 4,
+      "lr": 0.0002844684296968424,
+      "train_loss": 0.12493829265889161,
+      "validation": {
+        "mae_ln_ic50": 0.7719454995970212,
+        "mse_ln_ic50": 1.0990729151972771,
+        "n": 41567,
+        "pcc": 0.9244955186104099,
+        "rmse_ln_ic50": 1.0483667846690286
+      }
+    },
+    {
+      "epoch": 5,
+      "lr": 0.00027278492169843,
+      "train_loss": 0.12153772071525105,
+      "validation": {
+        "mae_ln_ic50": 0.770118375098583,
+        "mse_ln_ic50": 1.0959297662152236,
+        "n": 41567,
+        "pcc": 0.9248216016672228,
+        "rmse_ln_ic50": 1.046866642039579
+      }
+    },
+    {
+      "epoch": 6,
+      "lr": 0.00025826271631908303,
+      "train_loss": 0.11905657744951798,
+      "validation": {
+        "mae_ln_ic50": 0.7663223719850166,
+        "mse_ln_ic50": 1.087664603874823,
+        "n": 41567,
+        "pcc": 0.9254078010199598,
+        "rmse_ln_ic50": 1.0429115992618085
+      }
+    },
+    {
+      "epoch": 7,
+      "lr": 0.00024125939845167748,
+      "train_loss": 0.11678169536327342,
+      "validation": {
+        "mae_ln_ic50": 0.7647126996249373,
+        "mse_ln_ic50": 1.08643899114296,
+        "n": 41567,
+        "pcc": 0.9256014624508561,
+        "rmse_ln_ic50": 1.0423238417799718
+      }
+    },
+    {
+      "epoch": 8,
+      "lr": 0.00022219364621288548,
+      "train_loss": 0.11482682778367585,
+      "validation": {
+        "mae_ln_ic50": 0.7644399620137683,
+        "mse_ln_ic50": 1.0907443108105443,
+        "n": 41567,
+        "pcc": 0.9253988698709555,
+        "rmse_ln_ic50": 1.0443870502886103
+      }
+    },
+    {
+      "epoch": 9,
+      "lr": 0.0002015349216984301,
+      "train_loss": 0.11271603942384256,
+      "validation": {
+        "mae_ln_ic50": 0.7613341231103439,
+        "mse_ln_ic50": 1.0806473952025015,
+        "n": 41567,
+        "pcc": 0.9259341042590854,
+        "rmse_ln_ic50": 1.0395419160392243
+      }
+    },
+    {
+      "epoch": 10,
+      "lr": 0.00017979191126823302,
+      "train_loss": 0.11091544929132544,
+      "validation": {
+        "mae_ln_ic50": 0.760860431223805,
+        "mse_ln_ic50": 1.0849653009443405,
+        "n": 41567,
+        "pcc": 0.9257088419369441,
+        "rmse_ln_ic50": 1.041616676587093
+      }
+    },
+    {
+      "epoch": 11,
+      "lr": 0.0001575000000000001,
+      "train_loss": 0.10949050860357494,
+      "validation": {
+        "mae_ln_ic50": 0.7602193220114009,
+        "mse_ln_ic50": 1.0816343442972378,
+        "n": 41567,
+        "pcc": 0.9257896979127563,
+        "rmse_ln_ic50": 1.0400165115502915
+      }
+    },
+    {
+      "epoch": 12,
+      "lr": 0.0001352080887317672,
+      "train_loss": 0.10806968047232979,
+      "validation": {
+        "mae_ln_ic50": 0.7597624477174306,
+        "mse_ln_ic50": 1.0827645030099255,
+        "n": 41567,
+        "pcc": 0.9256725592599641,
+        "rmse_ln_ic50": 1.04055970660502
+      }
+    },
+    {
+      "epoch": 13,
+      "lr": 0.00011346507830157006,
+      "train_loss": 0.10667414247090128,
+      "validation": {
+        "mae_ln_ic50": 0.7623402177027662,
+        "mse_ln_ic50": 1.0954676776783734,
+        "n": 41567,
+        "pcc": 0.9249742272585096,
+        "rmse_ln_ic50": 1.046645918005881
+      }
+    },
+    {
+      "epoch": 14,
+      "lr": 9.280635378711463e-05,
+      "train_loss": 0.10566965224855368,
+      "validation": {
+        "mae_ln_ic50": 0.759520323622509,
+        "mse_ln_ic50": 1.0893140826086711,
+        "n": 41567,
+        "pcc": 0.9253472499950138,
+        "rmse_ln_ic50": 1.0437021043423602
+      }
+    }
+  ],
+  "paths": {
+    "test": {
+      "per_drug": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results/residual.test_per_drug.csv",
+      "per_drug_macro_pcc": 0.6873853966003332,
+      "predictions": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results/residual.test_predictions.csv"
+    },
+    "validation": {
+      "per_drug": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results/residual.validation_per_drug.csv",
+      "per_drug_macro_pcc": 0.6991109761084063,
+      "predictions": "${DRT_ROOT}/revision_work/20260820/final_remaining_jobs_v1/final_core_residual_hybrid_v3_20260821/residual_hybrid/results/residual.validation_predictions.csv"
+    }
+  },
+  "task": "residual"
+}
