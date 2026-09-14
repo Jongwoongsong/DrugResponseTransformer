@@ -1,0 +1,154 @@
+{
+  "analysis": "final mixed-split classical baselines",
+  "inputs": {
+    "basal_expression_csv_expected_sha256": "1ca0859617db4960cc643c1822035a91e79a8d3b4043fbc08a9fcdfd887f45f1",
+    "canonical_csv_expected_sha256": "8f34aab89dee99f1e9c08ab0c4b4777905cd2b5a977f1b0fede21cd77aea5652",
+    "feature_dimension": 2978,
+    "representation": "Morgan radius-2 1024-bit fingerprint + 1954-gene harmonized basal expression"
+  },
+  "manuscript_role": "Table 1 classical comparators",
+  "models": {
+    "random_forest": {
+      "configs": [
+        {
+          "max_depth": 12,
+          "max_features": 0.3,
+          "min_samples_leaf": 1,
+          "n_estimators": 200
+        },
+        {
+          "max_depth": 20,
+          "max_features": 0.3,
+          "min_samples_leaf": 1,
+          "n_estimators": 200
+        },
+        {
+          "max_depth": 30,
+          "max_features": 0.3,
+          "min_samples_leaf": 2,
+          "n_estimators": 200
+        },
+        {
+          "max_depth": null,
+          "max_features": 0.3,
+          "min_samples_leaf": 2,
+          "n_estimators": 200
+        },
+        {
+          "max_depth": 20,
+          "max_features": 0.5,
+          "min_samples_leaf": 5,
+          "n_estimators": 200
+        },
+        {
+          "max_depth": null,
+          "max_features": 0.5,
+          "min_samples_leaf": 5,
+          "n_estimators": 200
+        }
+      ],
+      "criterion": "squared_error",
+      "final_test": {
+        "macro_within_structure_pcc": 0.5234679036362649,
+        "mae": 0.9340326687107876,
+        "pooled_pcc": 0.8909858896460308,
+        "rmse": 1.2525263426786568
+      },
+      "historical_date": "2026-08-18",
+      "historical_source_sha256": "f40cbcbfe018ad44c0ea59bb0d9452dfc07b12179c3c9da317edcf2c1a7c40e5",
+      "n_jobs": 16,
+      "public_report": "reports/random_forest_final_report.json",
+      "public_script": "train_exact_mixed_random_forest.py",
+      "random_state": 42,
+      "selected_config": {
+        "max_depth": null,
+        "max_features": 0.5,
+        "min_samples_leaf": 5,
+        "n_estimators": 200
+      },
+      "selection_metric": "validation RMSE",
+      "status": "historical source confirmed; public script made path-portable",
+      "test_evaluated_after_selection": true
+    },
+    "ridge": {
+      "alpha": 1.0,
+      "final_test": {
+        "macro_within_structure_pcc": 0.4937865797882042,
+        "mae": 0.9706062078475952,
+        "pooled_pcc": 0.8832508872201765,
+        "rmse": 1.293397169790833
+      },
+      "historical_date": "2026-08-02",
+      "historical_source_sha256": "b6beeb54c427192d8af7514f29ff0c7ea8b6766bd3b8b38e3ff12dde24c7238a",
+      "public_report": "reports/ridge_final_report.json",
+      "public_script": "train_exact_mixed_ridge_xgb.py",
+      "status": "historical source pipeline retained",
+      "thread_environment": {
+        "MKL_NUM_THREADS": 12,
+        "NUMEXPR_NUM_THREADS": 12,
+        "OMP_NUM_THREADS": 12,
+        "OPENBLAS_NUM_THREADS": 12
+      }
+    },
+    "xgboost": {
+      "best_iteration": 3634,
+      "colsample_bytree": 0.8,
+      "device": "cpu",
+      "early_stopping_rounds": 50,
+      "final_test": {
+        "macro_within_structure_pcc": 0.5734412185494708,
+        "mae": 0.8918777108192444,
+        "pooled_pcc": 0.9025595764766449,
+        "rmse": 1.1881738557759034
+      },
+      "final_validation": {
+        "macro_within_structure_pcc": 0.5850821572488407,
+        "mae": 0.8830316662788391,
+        "pooled_pcc": 0.9032720250315741,
+        "rmse": 1.1799446987674265
+      },
+      "historical_date": "2026-08-18",
+      "learning_rate": 0.03,
+      "max_bin": 256,
+      "max_depth": 6,
+      "min_child_weight": 1.0,
+      "n_estimators": 5000,
+      "public_implementation_lineage": {
+        "byte_identical_historical_source_claimed": false,
+        "description": "Reconstructed from the only surviving exact-split classical training pipeline with the same artifact schema and CLI, then configured to the retained final-run arguments.",
+        "surviving_pipeline_sha256": "b6beeb54c427192d8af7514f29ff0c7ea8b6766bd3b8b38e3ff12dde24c7238a"
+      },
+      "public_report": "reports/xgboost_final_report.json",
+      "public_script": "train_exact_mixed_ridge_xgb.py",
+      "reg_alpha": 0.0,
+      "reg_lambda": 1.0,
+      "seed": 42,
+      "status": "final historical artifacts retained; exact historical source snapshot was not retained",
+      "subsample": 0.8,
+      "threads": 8,
+      "tree_method": "hist",
+      "xgboost_version": "1.6.2"
+    }
+  },
+  "note": "The final manuscript mixed-split classical results were assembled from finalized model-specific runs rather than from one common historical launch. All retained final models use the same exact mixed split manifests listed above.",
+  "split": {
+    "manifests": {
+      "test": {
+        "path": "manifests/test.csv",
+        "sha256": "3c38320b122103c4ca72bc3c91dfec41cde11e88f858dd77fd1fe16f660f00c3"
+      },
+      "train": {
+        "path": "manifests/train.csv",
+        "sha256": "8212927b7a56d4719269aee689f377e611512b303ff220713c638cd0154e9b31"
+      },
+      "validation": {
+        "path": "manifests/validation.csv",
+        "sha256": "c42e94721626cb739638b17f1e18d941d09ca3608e2566ab0ab7e1c38578ca77"
+      }
+    },
+    "test_n": 41567,
+    "train_n": 332537,
+    "type": "mixed",
+    "validation_n": 41567
+  }
+}

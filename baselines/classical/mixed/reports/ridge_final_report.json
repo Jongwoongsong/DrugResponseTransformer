@@ -1,0 +1,45 @@
+{
+  "feature_audit": {
+    "canonical_csv_sha256": "8f34aab89dee99f1e9c08ab0c4b4777905cd2b5a977f1b0fede21cd77aea5652",
+    "label": "LN_IC50 used directly; no additional log",
+    "manifest_sha256": {
+      "test": "3c38320b122103c4ca72bc3c91dfec41cde11e88f858dd77fd1fe16f660f00c3",
+      "train": "8212927b7a56d4719269aee689f377e611512b303ff220713c638cd0154e9b31",
+      "validation": "c42e94721626cb739638b17f1e18d941d09ca3608e2566ab0ab7e1c38578ca77"
+    },
+    "morgan_bits": 1024,
+    "morgan_radius": 2,
+    "n_entrez_expression_features": 1954,
+    "split_counts": {
+      "test": 41567,
+      "train": 332537,
+      "validation": 41567
+    },
+    "total_features": 2978
+  },
+  "models": {
+    "ridge": {
+      "alpha": 1.0,
+      "elapsed_seconds": 125.93380314600654,
+      "model": "Ridge",
+      "per_drug_macro_pcc": {
+        "test": 0.4937865797882042,
+        "validation": 0.5034980665429857
+      },
+      "test": {
+        "mae_ln_ic50": 0.9706062078475952,
+        "mse_ln_ic50": 1.672876238822937,
+        "n": 41567,
+        "pcc": 0.8832508872201765,
+        "rmse_ln_ic50": 1.293397169790833
+      },
+      "validation": {
+        "mae_ln_ic50": 0.9672638773918152,
+        "mse_ln_ic50": 1.6747989654541016,
+        "n": 41567,
+        "pcc": 0.8822523319716695,
+        "rmse_ln_ic50": 1.2941402418030674
+      }
+    }
+  }
+}

@@ -379,3 +379,11 @@ manifests, and provenance are available under:
 
 Reported Ridge/XGBoost metrics are retained under
 `reproducibility/reports/cell_blind/`.
+
+## Classical mixed-split baselines
+
+The exact mixed-split Ridge, Random Forest, and XGBoost reproducibility package, including canonical split manifests, model-specific provenance, retained final reports, and portable launch scripts, is available under:
+
+`baselines/classical/mixed/`
+
+See `baselines/classical/mixed/README.md` for exact final settings, provenance caveats, and reproduction commands.

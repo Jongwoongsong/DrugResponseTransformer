@@ -1,0 +1,88 @@
+{
+  "analysis": "mixed Random Forest validation tuning",
+  "input": {
+    "basal_csv": "${DRT_DATA}/GDSC970_basal_log2p1_genematch_lincs_clipz3_all970stats.csv",
+    "basal_csv_sha256": "1ca0859617db4960cc643c1822035a91e79a8d3b4043fbc08a9fcdfd887f45f1",
+    "canonical_csv": "${DRT_DATA}/GDSC_with_SMILES_BGE_entrez_KEGG_canonical970.csv",
+    "canonical_csv_sha256": "8f34aab89dee99f1e9c08ab0c4b4777905cd2b5a977f1b0fede21cd77aea5652",
+    "feature_representation": "Morgan radius-2 1024-bit fingerprint + 1954-gene harmonized basal expression"
+  },
+  "manifests": {
+    "test": {
+      "n": 41567,
+      "path": "baselines/classical/mixed/manifests/test.csv",
+      "sha256": "3c38320b122103c4ca72bc3c91dfec41cde11e88f858dd77fd1fe16f660f00c3"
+    },
+    "train": {
+      "n": 332537,
+      "path": "baselines/classical/mixed/manifests/train.csv",
+      "sha256": "8212927b7a56d4719269aee689f377e611512b303ff220713c638cd0154e9b31"
+    },
+    "validation": {
+      "n": 41567,
+      "path": "baselines/classical/mixed/manifests/validation.csv",
+      "sha256": "c42e94721626cb739638b17f1e18d941d09ca3608e2566ab0ab7e1c38578ca77"
+    }
+  },
+  "rf": {
+    "best_validation_rmse": 1.2463926531253617,
+    "configs": [
+      {
+        "max_depth": 12,
+        "max_features": 0.3,
+        "min_samples_leaf": 1,
+        "n_estimators": 200
+      },
+      {
+        "max_depth": 20,
+        "max_features": 0.3,
+        "min_samples_leaf": 1,
+        "n_estimators": 200
+      },
+      {
+        "max_depth": 30,
+        "max_features": 0.3,
+        "min_samples_leaf": 2,
+        "n_estimators": 200
+      },
+      {
+        "max_depth": null,
+        "max_features": 0.3,
+        "min_samples_leaf": 2,
+        "n_estimators": 200
+      },
+      {
+        "max_depth": 20,
+        "max_features": 0.5,
+        "min_samples_leaf": 5,
+        "n_estimators": 200
+      },
+      {
+        "max_depth": null,
+        "max_features": 0.5,
+        "min_samples_leaf": 5,
+        "n_estimators": 200
+      }
+    ],
+    "criterion": "squared_error",
+    "n_jobs": 16,
+    "random_state": 42,
+    "selected_config": {
+      "max_depth": null,
+      "max_features": 0.5,
+      "min_samples_leaf": 5,
+      "n_estimators": 200
+    }
+  },
+  "selection_metric": "validation RMSE",
+  "test": {
+    "macro_pcc": 0.5234679036362649,
+    "mae": 0.9340326687107876,
+    "n": 41567,
+    "n_defined_structure_pcc": 413,
+    "n_structures": 413,
+    "pooled_pcc": 0.8909858896460308,
+    "rmse": 1.2525263426786568
+  },
+  "test_evaluated_after_selection": true
+}
