@@ -358,3 +358,14 @@ train/validation/test feature caches.
 
 See `analysis/global_representation/README.md` for the reported run settings
 and metrics.
+
+## Drug-blind main-effect decomposition
+
+Code and canonical derived outputs for the two-way cell-line/drug
+main-effect decomposition reported in Supplementary Table S6 are provided in:
+
+- `analysis/main_effect_decomposition/`
+- `results/main_effect_decomposition/`
+
+See `analysis/main_effect_decomposition/README.md` for the analysis definition
+and reported summary values.
