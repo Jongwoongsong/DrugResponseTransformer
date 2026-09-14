@@ -1,0 +1,2 @@
+response,variance,sd,cell_only_r2,drug_only_r2,cell_plus_drug_r2,residual_fraction_after_additive,additive_residual_sd,lsqr_istop,lsqr_iterations
+observed_test_LN_IC50,7.455006617064861,2.730385800040877,0.06734367972741406,0.7198744031522921,0.7857675753355758,0.2142324246644242,1.2637658578483324,2,75
