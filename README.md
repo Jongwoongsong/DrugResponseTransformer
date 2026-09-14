@@ -369,3 +369,13 @@ main-effect decomposition reported in Supplementary Table S6 are provided in:
 
 See `analysis/main_effect_decomposition/README.md` for the analysis definition
 and reported summary values.
+
+## Classical cell-blind baselines
+
+The exact Ridge and XGBoost cell-blind baseline pipeline, canonical split
+manifests, and provenance are available under:
+
+`baselines/classical/cell_blind/`
+
+Reported Ridge/XGBoost metrics are retained under
+`reproducibility/reports/cell_blind/`.

@@ -1,0 +1,116 @@
+{
+  "filtering": {
+    "blank_or_digits": 9294,
+    "input_rows": 514866,
+    "label_valid_rows": 514866,
+    "path": "${DRT_DATA}/GDSC_with_SMILES_BGE_entrez_KEGG_canonical970.csv",
+    "rdkit_fail": 89901,
+    "unique_cells": 970,
+    "unique_smiles": 413,
+    "valid_rows": 415671
+  },
+  "splits": {
+    "cell_blind": {
+      "cell_overlaps": {
+        "train_test": 0,
+        "train_validation": 0,
+        "validation_test": 0
+      },
+      "mode": "cell_blind",
+      "seed": 42,
+      "smiles_overlaps": {
+        "train_test": 413,
+        "train_validation": 413,
+        "validation_test": 413
+      },
+      "test": {
+        "cells": 97,
+        "drugs": 417,
+        "rows": 41257,
+        "smiles": 413
+      },
+      "test_ratio": 0.1,
+      "train": {
+        "cells": 776,
+        "drugs": 417,
+        "rows": 332414,
+        "smiles": 413
+      },
+      "valid_ratio": 0.1,
+      "validation": {
+        "cells": 97,
+        "drugs": 417,
+        "rows": 42000,
+        "smiles": 413
+      }
+    },
+    "drug_blind": {
+      "cell_overlaps": {
+        "train_test": 970,
+        "train_validation": 970,
+        "validation_test": 970
+      },
+      "mode": "drug_blind",
+      "seed": 42,
+      "smiles_overlaps": {
+        "train_test": 0,
+        "train_validation": 0,
+        "validation_test": 0
+      },
+      "test": {
+        "cells": 970,
+        "drugs": 43,
+        "rows": 42448,
+        "smiles": 41
+      },
+      "test_ratio": 0.1,
+      "train": {
+        "cells": 970,
+        "drugs": 333,
+        "rows": 334320,
+        "smiles": 331
+      },
+      "valid_ratio": 0.1,
+      "validation": {
+        "cells": 970,
+        "drugs": 41,
+        "rows": 38903,
+        "smiles": 41
+      }
+    },
+    "mixed": {
+      "cell_overlaps": {
+        "train_test": 970,
+        "train_validation": 970,
+        "validation_test": 970
+      },
+      "mode": "mixed",
+      "seed": 42,
+      "smiles_overlaps": {
+        "train_test": 413,
+        "train_validation": 413,
+        "validation_test": 413
+      },
+      "test": {
+        "cells": 970,
+        "drugs": 417,
+        "rows": 41567,
+        "smiles": 413
+      },
+      "test_ratio": 0.1,
+      "train": {
+        "cells": 970,
+        "drugs": 417,
+        "rows": 332537,
+        "smiles": 413
+      },
+      "valid_ratio": 0.1,
+      "validation": {
+        "cells": 970,
+        "drugs": 417,
+        "rows": 41567,
+        "smiles": 413
+      }
+    }
+  }
+}

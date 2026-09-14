@@ -1,0 +1,76 @@
+{
+  "analysis": "canonical GDSC970 exact cell-blind classical baselines",
+  "canonical_shared_helper_sha256": "6f6ff711d9ab32dc216b19590590fac5f55d7e493f5b0813370296920dc5896a",
+  "canonical_source_script_sha256": "37421f236490a2c4c96e3e82494221af34f6c3e617a72c85940cf408decd745a",
+  "cell_counts": {
+    "test": 97,
+    "train": 776,
+    "validation": 97
+  },
+  "cell_representation": {
+    "n_features": 1954,
+    "normalization_fit_cells": "training cells only",
+    "type": "harmonized basal-expression vector"
+  },
+  "drug_representation": {
+    "n_bits": 1024,
+    "radius": 2,
+    "type": "Morgan fingerprint"
+  },
+  "reported_results": {
+    "ridge": "reproducibility/reports/cell_blind/ridge_exact_cellblind.report.json",
+    "xgboost": "reproducibility/reports/cell_blind/xgboost_exact_cellblind.report.json"
+  },
+  "ridge": {
+    "alpha": 1.0,
+    "max_iter": 1000,
+    "solver": "lsqr",
+    "tol": 0.0001
+  },
+  "row_counts": {
+    "test": 41257,
+    "train": 332414,
+    "validation": 42000
+  },
+  "runtime_verification": {
+    "ridge": {
+      "canonical_n_iter": 123,
+      "requirement": "OMP_NUM_THREADS, MKL_NUM_THREADS, OPENBLAS_NUM_THREADS, and NUMEXPR_NUM_THREADS must be set to 12 before Python starts",
+      "rerun_n_iter": 123,
+      "status": "exact_reproduction",
+      "test_metric_max_delta": 0.0,
+      "validation_metric_max_delta": 0.0
+    },
+    "xgboost": {
+      "backend": "gpu_hist",
+      "best_iteration_canonical": 999,
+      "best_iteration_rerun": 999,
+      "canonical_test_pearson": 0.8763396112229553,
+      "canonical_test_rmse": 1.337593807022052,
+      "note": "The archived canonical run and current reruns used the same audited data, split, feature pipeline, source helper snapshot, XGBoost version, gpu_hist backend, GPU model/UUID, driver, and reported hyperparameters. Two current reruns were identical to each other but differed slightly from the archived canonical run; the low-level source of this historical numerical divergence was not further resolved.",
+      "repeated_current_reruns_identical": true,
+      "rerun_test_pearson": 0.8772495208402911,
+      "rerun_test_rmse": 1.3328558487317597,
+      "status": "close_reproduction_with_small_numerical_divergence",
+      "xgboost_version": "1.6.2"
+    }
+  },
+  "split_seed": 42,
+  "verification": {
+    "public_ridge_report_semantically_identical_to_canonical": true,
+    "public_split_manifests_identical_to_canonical_in_order_and_membership": true,
+    "public_xgboost_report_semantically_identical_to_canonical": true
+  },
+  "xgboost": {
+    "colsample_bytree": 0.8,
+    "early_stopping_rounds": 50,
+    "learning_rate": 0.03,
+    "max_bin": 256,
+    "max_depth": 6,
+    "min_child_weight": 1.0,
+    "n_estimators": 1000,
+    "reg_alpha": 0.0,
+    "reg_lambda": 1.0,
+    "subsample": 0.8
+  }
+}
